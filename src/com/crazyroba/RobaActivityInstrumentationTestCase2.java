@@ -5,7 +5,7 @@ import android.test.ActivityInstrumentationTestCase2;
 
 @SuppressWarnings("unchecked")
 public class RobaActivityInstrumentationTestCase2 extends ActivityInstrumentationTestCase2{
-	private Solo solo;
+	protected Solo solo;
 	private String launcherActivityFullClassName;
 	private Class launcherActivityClass;
 	
@@ -14,13 +14,5 @@ public class RobaActivityInstrumentationTestCase2 extends ActivityInstrumentatio
 		
 		this.launcherActivityFullClassName = launcherActivityFullClassName;
 		this.launcherActivityClass = activityClass;
-	}
-	
-	public Solo getSolo() {
-		return this.solo;
-	}
-	
-	public void setSolo(Solo solo) {
-		this.solo = solo;
 	}
 }
