@@ -5,6 +5,7 @@ import android.test.ActivityInstrumentationTestCase2;
 
 @SuppressWarnings("unchecked")
 public class RobaActivityInstrumentationTestCase2 extends ActivityInstrumentationTestCase2{
+	private Solo solo;
 	private String launcherActivityFullClassName;
 	private Class launcherActivityClass;
 	
@@ -18,5 +19,4 @@ public class RobaActivityInstrumentationTestCase2 extends ActivityInstrumentatio
 			throw new RuntimeException(e);
 		}
 	}
-
 }
