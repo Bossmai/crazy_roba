@@ -19,4 +19,8 @@ public class RobaActivityInstrumentationTestCase2 extends ActivityInstrumentatio
 	public Solo getSolo() {
 		return this.solo;
 	}
+	
+	public void setSolo(Solo solo) {
+		this.solo = solo;
+	}
 }
