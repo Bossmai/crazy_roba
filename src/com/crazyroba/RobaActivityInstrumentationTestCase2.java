@@ -1,4 +1,4 @@
-package com.crazy_roba;
+package com.crazyroba;
 
 import com.jayway.android.robotium.solo.Solo;
 import android.test.ActivityInstrumentationTestCase2;
