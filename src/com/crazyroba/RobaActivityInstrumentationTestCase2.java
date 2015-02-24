@@ -13,69 +13,75 @@ import android.view.View;
 
 @SuppressWarnings("unchecked")
 public class RobaActivityInstrumentationTestCase2 extends ActivityInstrumentationTestCase2{
-     protected Solo solo;
-     private String launcherActivityFullClassName;
-     private Class launcherActivityClass;
+	private static String TAG = "roba";
+    protected Solo solo;
+    private String launcherActivityFullClassName;
+    private Class launcherActivityClass;
     
-     public enum DragDirection {
-          Right, Left, Top, Buttom
-     }
+    public enum DragDirection {
+    	Right, Left, Top, Buttom
+    }
     
-     public RobaActivityInstrumentationTestCase2(String launcherActivityFullClassName, Class activityClass) {
-          super(activityClass);
-         
-          this.launcherActivityFullClassName = launcherActivityFullClassName;
-          this.launcherActivityClass = activityClass;
-     }
-    
-     protected void robaDrag(DragDirection direction){
-          DisplayMetrics displayMetrics = new DisplayMetrics(); 
-          solo.getCurrentActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-         
-          long x = displayMetrics.widthPixels; 
-          long y = displayMetrics.heightPixels;
-         
-          //use middle of the screen to avoid system menu/menu
-          switch (direction) {
-               case Right:
-                    solo.drag(x / 5, x * 4 / 5, y / 2, y / 2, 5);
-                    break;
-               case Left:
-                    solo.drag(x * 4 / 5, x / 5, y / 2, y / 2, 5);
-                    break;
-               case Top:
-                    solo.drag(x / 2, x / 2, y / 5 * 4, y / 5, 5);
-                    break;
-               case Buttom:
-                    solo.drag(x / 2, x / 2, y / 5, y / 5 * 4, 5);
-                    break;
-               default:
-                    break;
-          }         
-     }
-    
-     protected void robaClickOnView(String view) {
-        Activity activity = solo.getCurrentActivity();       
-        int imageId = activity.getResources().getIdentifier(view, "id" , activity.getPackageName());
-        View viewInstance = activity.findViewById(imageId);
-        solo.clickOnView(viewInstance);
-     }
-     
-     protected void robaRandomSleep(int maxSleepSecond) {
-    	 Random r = new Random();
-    	 solo.sleep(r.nextInt(maxSleepSecond) * 1000);
-     }
-     
-     protected void robaRandomTouch() {
-    	 DisplayMetrics displayMetrics = new DisplayMetrics(); 
+    public RobaActivityInstrumentationTestCase2(String launcherActivityFullClassName, Class activityClass) {
+         super(activityClass);
+        
+         this.launcherActivityFullClassName = launcherActivityFullClassName;
+         this.launcherActivityClass = activityClass;
+    }
+   
+    protected void robaDrag(DragDirection direction){
+         DisplayMetrics displayMetrics = new DisplayMetrics(); 
          solo.getCurrentActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         
-         int x = displayMetrics.widthPixels; 
-         int y = displayMetrics.heightPixels;
+         long x = displayMetrics.widthPixels; 
+         long y = displayMetrics.heightPixels;
+        
+         //use middle of the screen to avoid system menu/menu
+         switch (direction) {
+              case Right:
+                   solo.drag(x / 5, x * 4 / 5, y / 2, y / 2, 5);
+                   break;
+              case Left:
+                   solo.drag(x * 4 / 5, x / 5, y / 2, y / 2, 5);
+                   break;
+              case Top:
+                   solo.drag(x / 2, x / 2, y / 5 * 4, y / 5, 5);
+                   break;
+              case Buttom:
+                   solo.drag(x / 2, x / 2, y / 5, y / 5 * 4, 5);
+                   break;
+              default:
+                   break;
+         }         
+    }
+   
+    protected void robaClickOnView(String view) {
+       Activity activity = solo.getCurrentActivity();       
+       int imageId = activity.getResources().getIdentifier(view, "id" , activity.getPackageName());
+       View viewInstance = activity.findViewById(imageId);
+       solo.clickOnView(viewInstance);
+    }
+    
+    protected void robaRandomSleep(int maxSleepSecond) {
+   	 Random r = new Random();
+   	 solo.sleep(r.nextInt(maxSleepSecond) * 1000);
+    }
+    
+    protected void robaRandomTouch() {
+    	DisplayMetrics displayMetrics = new DisplayMetrics(); 
+        solo.getCurrentActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+       
+        int maxX = displayMetrics.widthPixels; 
+        int maxY = displayMetrics.heightPixels;
+        
+        Random r = new Random();
+        
+        int x = r.nextInt(maxX);
+        int y = r.nextInt(maxY);
          
-         Random r = new Random();
+         solo.clickOnScreen(x, y);
+         Log.d(TAG, "Random click on (" + x + ", " + y + ")")
          
-         solo.clickOnScreen(r.nextInt(x), r.nextInt(y));
      }
      
      protected void robaRandomClickOnView() {
