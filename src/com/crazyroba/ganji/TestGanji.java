@@ -1,13 +1,22 @@
 package com.crazyroba.ganji;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import com.crazyroba.*;
 import com.jayway.android.robotium.solo.Solo;
 
 public class TestGanji extends RobaActivityInstrumentationTestCase2 {
+	private static final boolean firstStart = false;
+	private static final String runType = ""; //randomClick
+	
 	private static final String LAUNCHER_ACTIVITY_FULL_CLASSNAME = "com.ganji.android.control.LaunchActivity";
 	private static final String TAG = "TestGanJi";
+	
 	
 	private static Class launcherActivityClass;
 	
@@ -30,13 +39,16 @@ public class TestGanji extends RobaActivityInstrumentationTestCase2 {
 	
 	public void testSample() {
 		//com.ganji.android/.control.CityActivity com.ganji.android:id/qunzu_feature_start_btn
-		//firstStart("6.1.1");
-		int step = 100;
+		if (firstStart) {
+			firstStart("6.1.1");
+		}
+		
+		int step = 25;
 		while (step > 0) {
 			randomClick();
 			step--;
-		}
-		
+			Log.d(TAG, "Remain steps: " + step);
+		}	
 	}
 	
 	private void firstStart(String version) {
@@ -61,6 +73,7 @@ public class TestGanji extends RobaActivityInstrumentationTestCase2 {
 			Log.d(TAG, "Go into City Activity");
 			
 			Log.d(TAG, "Finish first start activies");
+			solo.clickOnText("上海", 1, true);
 			return;
 		}
 		
@@ -72,11 +85,19 @@ public class TestGanji extends RobaActivityInstrumentationTestCase2 {
 			robaRandomClickOnView();
 		} catch (Exception e) {
 			;
-		}
-		
+		}		
 		
 		Log.d(TAG, "Sleep for 10 seconds.");
 		solo.sleep(10000);
+	}
+	
+	private void findRandomJob() {
+		Log.d(TAG, "Find random job.");
+		solo.waitForText("全职工作");
+		
+		solo.clickOnText("全职工作");
+		
+		solo.waitForActivity("NewFeatureActivity", 10000);
 	}
 	
 	@Override
