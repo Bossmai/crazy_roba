@@ -1,5 +1,6 @@
 package com.crazyroba;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -88,14 +89,29 @@ public class RobaActivityInstrumentationTestCase2 extends ActivityInstrumentatio
          
      }
      
-     protected void robaRandomClickOnView() {
-    	 List<View> viewList = solo.getCurrentViews();
+    protected void robaRandomClickOnView() {
+    	List<View> viewList = solo.getCurrentViews();
     	 
-    	 Random r = new Random();
-    	 View targetView = viewList.get(r.nextInt(viewList.size()));
-    	 
-    	 solo.clickOnView(targetView);    
-    	 
-    	 Log.d(TAG, "Roba Random Click on View:" + targetView.getClass().toString());
-     }
+    	Random r = new Random();
+    	View targetView = viewList.get(r.nextInt(viewList.size()));
+    	
+    	solo.clickOnView(targetView);    
+    	
+    	Log.d(TAG, "Roba Random Click on View:" + targetView.getClass().toString());
+    }
+     
+    protected List<View> robaGetViewsWithResourceId(Class viewClass, String resourceName) {
+    	List<View> views = solo.getCurrentViews(viewClass);
+    	List<View> resultViews = new ArrayList<View>();
+    	
+    	for (View view : views) {
+    		if (solo.getCurrentActivity().getResources().getResourceName(view.getId()).equals(resourceName)) {
+    			resultViews.add(view);
+    		}
+    	}
+    	
+    	Log.d(TAG, "Get Views with specific resource name.")
+    	
+    	return resultViews;    	
+    }
 }
