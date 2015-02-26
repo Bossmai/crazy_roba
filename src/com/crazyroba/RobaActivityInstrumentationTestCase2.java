@@ -110,7 +110,7 @@ public class RobaActivityInstrumentationTestCase2 extends ActivityInstrumentatio
     		}
     	}
     	
-    	Log.d(TAG, "Get Views with specific resource name.")
+    	Log.d(TAG, "Get Views with specific resource name.");
     	
     	return resultViews;    	
     }
