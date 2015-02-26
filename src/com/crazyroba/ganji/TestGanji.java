@@ -11,7 +11,7 @@ import com.crazyroba.*;
 import com.jayway.android.robotium.solo.Solo;
 
 public class TestGanji extends RobaActivityInstrumentationTestCase2 {
-	private static final boolean firstStart = false;
+	private static final boolean firstStart = true;
 	private static final String runType = ""; //randomClick
 	
 	private static final String LAUNCHER_ACTIVITY_FULL_CLASSNAME = "com.ganji.android.control.LaunchActivity";
@@ -42,13 +42,6 @@ public class TestGanji extends RobaActivityInstrumentationTestCase2 {
 		if (firstStart) {
 			firstStart("6.1.1");
 		}
-		
-		int step = 25;
-		while (step > 0) {
-			randomClick();
-			step--;
-			Log.d(TAG, "Remain steps: " + step);
-		}	
 	}
 	
 	private void firstStart(String version) {
@@ -73,7 +66,13 @@ public class TestGanji extends RobaActivityInstrumentationTestCase2 {
 			Log.d(TAG, "Go into City Activity");
 			
 			Log.d(TAG, "Finish first start activies");
-			solo.clickOnText("上海", 1, true);
+			
+			robaWaitForViewByResourceId("com.ganji.android:id/guide_im");
+			
+			robaClickOnView("com.ganji.android:id/guide_im");
+			
+			solo.sleep(10000);
+			
 			return;
 		}
 		
@@ -90,16 +89,7 @@ public class TestGanji extends RobaActivityInstrumentationTestCase2 {
 		Log.d(TAG, "Sleep for 10 seconds.");
 		solo.sleep(10000);
 	}
-	
-	private void findRandomJob() {
-		Log.d(TAG, "Find random job.");
-		solo.waitForText("全职工作");
-		
-		solo.clickOnText("全职工作");
-		
-		solo.waitForActivity("NewFeatureActivity", 10000);
-	}
-	
+
 	@Override
 	public void tearDown() throws Exception {
 		solo.finishOpenedActivities();
