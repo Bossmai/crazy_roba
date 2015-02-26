@@ -126,7 +126,21 @@ public class RobaActivityInstrumentationTestCase2 extends ActivityInstrumentatio
         	remainTime--;
     	}
     	
-    	
     	Log.d(TAG, "Wait view with specific resource name.");
+    }
+    
+    protected int robaGetViewCount(Class viewClass, String resourceId) {
+    	List<View> views = solo.getCurrentViews(viewClass);
+    	
+    	int sum = 0;
+    	
+    	for (View view : views) {
+    		if (solo.getCurrentActivity().getResources().getResourceName(view.getId()).equals(resourceId)) {
+    			sum++;
+    		}
+    	}
+    	
+    	return sum;
+    	
     }
 }
