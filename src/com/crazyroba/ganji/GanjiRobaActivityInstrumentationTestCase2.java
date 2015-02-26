@@ -36,8 +36,7 @@ public class GanjiRobaActivityInstrumentationTestCase2 extends RobaActivityInstr
 			Log.d(TAG, "Finish first start activies");
 			solo.clickOnText("…œ∫£", 1, true);
 			return;
-		}
-		
+		}		
 	}
 	
 }

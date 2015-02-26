@@ -1,4 +1,4 @@
-package com.crazyroba.ganji;
+package com.crazyroba.ganji.test;
 
 import java.util.ArrayList;
 import java.util.List;
