@@ -114,4 +114,19 @@ public class RobaActivityInstrumentationTestCase2 extends ActivityInstrumentatio
     	
     	return resultViews;    	
     }
+    
+    protected void robaWaitForViewByResourceId(String resourceId) {
+    	int remainTime = 5;
+    	while (remainTime > 0) {
+    		Activity activity = solo.getCurrentActivity();       
+        	int viewId = activity.getResources().getIdentifier(resourceId, "id" , activity.getPackageName());
+        	View viewInstance = activity.findViewById(viewId);
+        	
+        	solo.waitForView(viewInstance, 5000, true);
+        	remainTime--;
+    	}
+    	
+    	
+    	Log.d(TAG, "Wait view with specific resource name.");
+    }
 }
