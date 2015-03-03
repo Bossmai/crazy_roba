@@ -16,18 +16,13 @@ import android.view.View;
 public class RobaActivityInstrumentationTestCase2 extends ActivityInstrumentationTestCase2{
 	private static String TAG = "roba";
     protected Solo solo;
-    private String launcherActivityFullClassName;
-    private Class launcherActivityClass;
     
     public enum DragDirection {
     	Right, Left, Top, Buttom
     }
     
     public RobaActivityInstrumentationTestCase2(String launcherActivityFullClassName, Class activityClass) {
-         super(activityClass);
-        
-         this.launcherActivityFullClassName = launcherActivityFullClassName;
-         this.launcherActivityClass = activityClass;
+         super(activityClass);    
     }
    
     protected void robaDrag(DragDirection direction){

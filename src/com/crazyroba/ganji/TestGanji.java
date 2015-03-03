@@ -15,7 +15,6 @@ import com.jayway.android.robotium.solo.Solo;
 
 public class TestGanji extends RobaActivityInstrumentationTestCase2 {
 	private static final boolean firstStart = true;
-	private static final String runType = ""; //randomClick
 	
 	private static final String LAUNCHER_ACTIVITY_FULL_CLASSNAME = "com.ganji.android.control.LaunchActivity";
 	private static final String TAG = "TestGanJi";
@@ -40,14 +39,15 @@ public class TestGanji extends RobaActivityInstrumentationTestCase2 {
 		solo = new Solo(getInstrumentation(), getActivity());
 	}
 	
-	/*public void test1() {
-		//com.ganji.android/.control.CityActivity com.ganji.android:id/qunzu_feature_start_btn
+	public void test1() {
 		if (firstStart) {
 			firstStart("6.1.1");
 		}
-	}*/
+		
+		localServiceTest();
+	}
 	
-	public void test1() {
+	private void localServiceTest() {
 		Random r = new Random();
 		
 		solo.waitForActivity("com.ganji.android/.control.MainActivity");
@@ -60,12 +60,8 @@ public class TestGanji extends RobaActivityInstrumentationTestCase2 {
 		
 		solo.waitForActivity("com.ganji.android/.control.HomePageActivity");
 		
-		int remainSteps = r.nextInt(2);
-		while (remainSteps > 0) {
-			robaDrag(DragDirection.Top);
-			robaRandomSleep(5);
-			remainSteps--;
-		}
+		robaDrag(DragDirection.Top);
+		robaRandomSleep(5);
 		
 		List<View> itemViews = robaGetViewsWithResourceId(LinearLayout.class, "com.ganji.android:id/item_text_lv");
 		
@@ -78,6 +74,11 @@ public class TestGanji extends RobaActivityInstrumentationTestCase2 {
 		List<View> views = robaGetViewsWithResourceId(RelativeLayout.class, "com.ganji.android:id/post_list_item_life");
 		
 		//remove the last one for some of it is behind the menu
+		if (views.size() == 0) {
+			Log.d(TAG, "No clickable view detected.");
+			return;
+		}
+		
 		views.remove(views.size() - 1);
 		
 		robaRandomClickInViews(views);
@@ -137,18 +138,6 @@ public class TestGanji extends RobaActivityInstrumentationTestCase2 {
 			return;
 		}
 		
-	}
-	
-	private void randomClick() {
-		Log.d(TAG, "Click on random view.");
-		try {
-			robaRandomClickOnView();
-		} catch (Exception e) {
-			;
-		}		
-		
-		Log.d(TAG, "Sleep for 10 seconds.");
-		solo.sleep(10000);
 	}
 
 	@Override
