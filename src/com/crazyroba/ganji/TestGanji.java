@@ -60,7 +60,7 @@ public class TestGanji extends RobaActivityInstrumentationTestCase2 {
 		
 		solo.waitForActivity("com.ganji.android/.control.HomePageActivity");
 		
-		int remainSteps = r.nextInt(5);
+		int remainSteps = r.nextInt(2);
 		while (remainSteps > 0) {
 			robaDrag(DragDirection.Top);
 			robaRandomSleep(5);
