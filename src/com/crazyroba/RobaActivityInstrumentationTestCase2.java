@@ -99,12 +99,25 @@ public class RobaActivityInstrumentationTestCase2 extends ActivityInstrumentatio
     	
     	Log.d(TAG, "Roba Random Click on View:" + targetView.getClass().toString());
     }
+    
+    protected void robaRandomClickInViews(List<View> targetViews) {
+    	Random r = new Random();
+    	
+    	int targetIndex = r.nextInt(targetViews.size());
+    	solo.clickOnView(targetViews.get(targetIndex));
+    	
+    	Log.d(TAG, "Roba Random Click In Views: " + targetIndex);
+    }
      
     protected List<View> robaGetViewsWithResourceId(Class viewClass, String resourceName) {
     	List<View> views = solo.getCurrentViews(viewClass);
     	List<View> resultViews = new ArrayList<View>();
-    	
+    	  	
     	for (View view : views) {
+    		if (view.getId() <= 0) {
+    			continue;
+    		}
+    		
     		if (solo.getCurrentActivity().getResources().getResourceName(view.getId()).equals(resourceName)) {
     			resultViews.add(view);
     		}
