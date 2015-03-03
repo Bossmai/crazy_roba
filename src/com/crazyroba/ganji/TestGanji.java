@@ -48,6 +48,8 @@ public class TestGanji extends RobaActivityInstrumentationTestCase2 {
 	}*/
 	
 	public void test1() {
+		Random r = new Random();
+		
 		solo.waitForActivity("com.ganji.android/.control.MainActivity");
 		
 		Log.d(TAG, "Main activity loaded.");
@@ -58,7 +60,14 @@ public class TestGanji extends RobaActivityInstrumentationTestCase2 {
 		
 		solo.waitForActivity("com.ganji.android/.control.HomePageActivity");
 		
-		List<View> itemViews = robaGetViewsWithResourceId(TextView.class, "com.ganji.android:id/item_text");
+		int remainSteps = r.nextInt(5);
+		while (remainSteps > 0) {
+			robaDrag(DragDirection.Top);
+			robaRandomSleep(5);
+			remainSteps--;
+		}
+		
+		List<View> itemViews = robaGetViewsWithResourceId(LinearLayout.class, "com.ganji.android:id/item_text_lv");
 		
 		robaRandomClickInViews(itemViews);
 		
