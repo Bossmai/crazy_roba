@@ -2,10 +2,13 @@ package com.crazyroba.ganji;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.crazyroba.*;
 import com.jayway.android.robotium.solo.Solo;
@@ -37,11 +40,60 @@ public class TestGanji extends RobaActivityInstrumentationTestCase2 {
 		solo = new Solo(getInstrumentation(), getActivity());
 	}
 	
-	public void testSample() {
+	/*public void test1() {
 		//com.ganji.android/.control.CityActivity com.ganji.android:id/qunzu_feature_start_btn
 		if (firstStart) {
 			firstStart("6.1.1");
 		}
+	}*/
+	
+	public void test1() {
+		solo.waitForActivity("com.ganji.android/.control.MainActivity");
+		
+		Log.d(TAG, "Main activity loaded.");
+		
+		solo.clickOnText("本地服务");
+		
+		Log.d(TAG, "Click local services.");
+		
+		solo.waitForActivity("com.ganji.android/.control.HomePageActivity");
+		
+		List<View> itemViews = robaGetViewsWithResourceId(TextView.class, "com.ganji.android:id/item_text");
+		
+		robaRandomClickInViews(itemViews);
+		
+		Log.d(TAG, "Click two-hands. ");
+		
+		solo.waitForActivity("com.ganji.android/.control.IntentSearchListActivity");
+		
+		List<View> views = robaGetViewsWithResourceId(RelativeLayout.class, "com.ganji.android:id/post_list_item_life");
+		
+		//remove the last one for some of it is behind the menu
+		views.remove(views.size() - 1);
+		
+		robaRandomClickInViews(views);
+		
+		solo.waitForActivity("com.ganji.android/.control.PostDetailActivity");
+		
+		Log.d(TAG, "PostDetailActivity loaded.");
+		
+		int i = 5;
+		while (i > 0) {
+			robaDrag(DragDirection.Top);
+			robaRandomSleep(5);
+			i--;
+		}
+		
+		Log.d(TAG, "Drag to the buttom.");
+		
+		i = 3;
+		while (i > 0) {
+			solo.goBack();
+			robaRandomSleep(5);
+			i--;
+		}
+		
+		Log.d(TAG, "Back to the homepage.");
 	}
 	
 	private void firstStart(String version) {
