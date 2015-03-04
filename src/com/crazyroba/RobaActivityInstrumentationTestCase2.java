@@ -20,7 +20,7 @@ public class RobaActivityInstrumentationTestCase2 extends ActivityInstrumentatio
     private Class launcherActivityClass;
     
     public enum DragDirection {
-    	Right, Left, Top, Buttom
+    	Right, Left, Top, Buttom, TopButtom, LeftRight
     }
     
     public RobaActivityInstrumentationTestCase2(String launcherActivityFullClassName, Class activityClass) {
@@ -68,8 +68,16 @@ public class RobaActivityInstrumentationTestCase2 extends ActivityInstrumentatio
     
     protected void robaRandomSleep(int maxSleepSecond) {
     	Random r = new Random();
-   	 	solo.sleep(r.nextInt(maxSleepSecond) * 1000);
-   	 	Log.d(TAG, "Roba random sleep.");
+   	 	int sleepTime = r.nextInt(maxSleepSecond) * 1000;
+   	 	solo.sleep(sleepTime);
+   	 	Log.d(TAG, "Roba random sleep " + sleepTime + " s");
+    }
+    
+    protected void robaRandomSleep(int minSleepSecond, int maxSleepSecond) {
+    	Random r = new Random();
+    	int sleepTime = (minSleepSecond + r.nextInt(maxSleepSecond - minSleepSecond)) * 1000;
+    	solo.sleep(sleepTime);
+    	Log.d(TAG, "Roba random sleep " + sleepTime + " s");
     }
     
     protected void robaRandomTouch() {
@@ -154,6 +162,35 @@ public class RobaActivityInstrumentationTestCase2 extends ActivityInstrumentatio
     	}
     	
     	return sum;
-    	
+    }
+    
+    protected void robaRandomDrag(DragDirection dragDirection, int steps) {
+    	Random r = new Random();
+    	for (int i = 0; i < steps; i++) {
+    		switch (dragDirection) {
+    		case Top:
+    		case Buttom:
+    		case Left:
+    		case Right:
+    			robaDrag(dragDirection);
+    			break;
+    		case TopButtom:
+    			if (r.nextInt() % 2 == 0) {
+    				robaDrag(dragDirection.Top);
+    			} else {
+    				robaDrag(dragDirection.Buttom);
+    			}
+    			break;
+    		case LeftRight:
+    			if (r.nextInt() % 2 == 0) {
+    				robaDrag(dragDirection.Left);
+    			} else {
+    				robaDrag(dragDirection.Right);
+    			}
+    			break;
+    		default:
+    				break;
+        	}
+    	}
     }
 }
