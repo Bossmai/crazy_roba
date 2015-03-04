@@ -173,19 +173,24 @@ public class RobaActivityInstrumentationTestCase2 extends ActivityInstrumentatio
     		case Left:
     		case Right:
     			robaDrag(dragDirection);
+    			Log.d(TAG, "Roba RandomDrag " + dragDirection.toString());
     			break;
     		case TopButtom:
     			if (r.nextInt() % 2 == 0) {
     				robaDrag(dragDirection.Top);
+    				Log.d(TAG, "Roba RandomDrag top.");
     			} else {
     				robaDrag(dragDirection.Buttom);
+    				Log.d(TAG, "Roba RandomDrag buttom.");
     			}
     			break;
     		case LeftRight:
     			if (r.nextInt() % 2 == 0) {
     				robaDrag(dragDirection.Left);
+    				Log.d(TAG, "Roba RandomDrag left.");
     			} else {
     				robaDrag(dragDirection.Right);
+    				Log.d(TAG, "Roba RandomDrag right.");
     			}
     			break;
     		default:
