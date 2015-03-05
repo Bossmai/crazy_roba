@@ -72,7 +72,7 @@ public class RobaActivityInstrumentationTestCase2 extends ActivityInstrumentatio
     	Random r = new Random();
     	int sleepTime = (minSleepSecond + r.nextInt(maxSleepSecond - minSleepSecond)) * 1000;
     	solo.sleep(sleepTime);
-    	Log.d(TAG, "Roba random sleep " + sleepTime + " s");
+    	Log.d(TAG, "Roba random sleep " + (sleepTime / 1000) + " s");
     }
     
     protected void robaRandomTouch() {
@@ -131,18 +131,23 @@ public class RobaActivityInstrumentationTestCase2 extends ActivityInstrumentatio
     	return resultViews;    	
     }
     
-    protected void robaWaitForViewByResourceId(String resourceId) {
-    	int remainTime = 5;
+    protected boolean robaWaitForViewByResourceId(String resourceId) {
+    	int remainTime = 4;
     	while (remainTime > 0) {
     		Activity activity = solo.getCurrentActivity();       
         	int viewId = activity.getResources().getIdentifier(resourceId, "id" , activity.getPackageName());
         	View viewInstance = activity.findViewById(viewId);
-        	
-        	solo.waitForView(viewInstance, 5000, true);
-        	remainTime--;
+        	if (solo.waitForView(viewInstance, 5000, true) == true) {
+        		Log.d(TAG, resourceId + " found!");
+        		return true;
+        	} else {
+        		remainTime--;
+        		Log.d(TAG, "Wait view with name " + resourceId + ".");
+        	}
     	}
     	
-    	Log.d(TAG, "Wait view with specific resource name.");
+    	Log.d(TAG, "Failed waiting the target view " + resourceId + ".");
+    	return false;
     }
     
     protected int robaGetViewCount(Class viewClass, String resourceId) {
@@ -162,6 +167,7 @@ public class RobaActivityInstrumentationTestCase2 extends ActivityInstrumentatio
     protected void robaRandomDrag(DragDirection dragDirection, int steps) {
     	Random r = new Random();
     	for (int i = 0; i < steps; i++) {
+    		robaRandomSleep(5);
     		switch (dragDirection) {
     		case Top:
     		case Buttom:
