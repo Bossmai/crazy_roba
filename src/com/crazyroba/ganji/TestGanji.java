@@ -14,7 +14,9 @@ import com.crazyroba.*;
 import com.jayway.android.robotium.solo.Solo;
 
 public class TestGanji extends RobaActivityInstrumentationTestCase2 {
-	private static final boolean firstStart = true;
+	private static final String APK_VERSION = "6.1.1";
+	
+	private static boolean isFirstStart = false;
 	
 	private static final String LAUNCHER_ACTIVITY_FULL_CLASSNAME = "com.ganji.android.control.LaunchActivity";
 	private static final String TAG = "TestGanJi";
@@ -40,12 +42,23 @@ public class TestGanji extends RobaActivityInstrumentationTestCase2 {
 	}
 	
 	public void test1() {
-		if (firstStart) {
-			firstStart("6.1.1");
-		}
+		CheckFirstStart("6.1.1");
 		
 		localServiceTest();
 	}
+	
+	private void CheckFirstStart(String version) {
+		Log.d(TAG, "Check apk version for first start: " + version + ".");
+		
+		if (version.equals(version)) {
+			if (solo.waitForActivity("NewFeatureActivity", 10000))
+			{
+				firstStart(version);
+				isFirstStart = true;
+			}			
+		}		
+	}
+	
 	
 	private void localServiceTest() {
 		Random r = new Random();
