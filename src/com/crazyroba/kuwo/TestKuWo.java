@@ -6,7 +6,7 @@ import com.jayway.android.robotium.solo.Solo;
 public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 	private static final boolean firstStart = true;
 	
-	private static final String LAUNCHER_ACTIVITY_FULL_CLASSNAME = "cn.kuwo.player/.activities.MainActivity";
+	private static final String LAUNCHER_ACTIVITY_FULL_CLASSNAME = "cn.kuwo.player.activities.EntryActivity";
 	private static final String TAG = "TestKuWo";
 
 private static Class launcherActivityClass;
