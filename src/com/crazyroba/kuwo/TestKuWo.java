@@ -52,6 +52,8 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 	
 	private void playMusic() {
 		if (APK_VERSION.equals("6.3.9.0_changxin09")) {
+			solo.clickOnScreen(200, 50);
+			
 			solo.waitForText("最新单曲");
 			
 			Log.d(TAG, "Go into newest single song.");
@@ -66,14 +68,19 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 			
 			//Double click to avoid the ADs.
 			
-			robaClickOnView("cn.kuwo.player:id/library_music_list_batch_play_text");
+			if (isFirstStart) {
+				robaClickOnView("cn.kuwo.player:id/library_music_list_batch_play_text");
+			}
 			
 			robaClickOnView("cn.kuwo.player:id/library_music_list_batch_play_text");
 			
 			//Click to avoid tips.
-			solo.waitForText("我知道了");
 			
-			solo.clickOnText("我知道了");			
+			if (isFirstStart) {
+				solo.waitForText("我知道了");
+				
+				solo.clickOnText("我知道了");			
+			}
 			
 			Log.d(TAG, "Play songs.");
 			
@@ -142,7 +149,8 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 				robaClickOnView("cn.kuwo.player:id/downloading_layout");
 				robaRandomSleep(8);
 				solo.goBack();
-				solo.clickOnScreen(200, 50);
+				
+				isFirstStart = true;
 			}
 		}
 	}
