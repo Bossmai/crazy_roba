@@ -8,12 +8,12 @@ import com.crazyroba.RobaActivityInstrumentationTestCase2;
 import com.jayway.android.robotium.solo.Solo;
 
 public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
-	private static final String APK_VERSION = "6.6.6.0";
+	private static final String APK_VERSION = "6.3.9.0_changxin09";
 
 	private static boolean isFirstStart = false;
 	
 	//private static final String LAUNCHER_ACTIVITY_FULL_CLASSNAME = "cn.kuwo.player/cn.kuwo.ui.guide.GuideActivity";
-	private static final String LAUNCHER_ACTIVITY_FULL_CLASSNAME = "cn.kuwo.player.activities.MainActivity";
+	private static final String LAUNCHER_ACTIVITY_FULL_CLASSNAME = "cn.kuwo.player.activities.EntryActivity";
 	private static final String TAG = "TestKuWo";
 
 	private static Class launcherActivityClass;
@@ -36,7 +36,13 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 	}
 	
 	public void test1() {
-		CheckFirstStart(APK_VERSION);
+		checkFirstStart();
+		//robaWaitForViewByResourceId("cn.kuwo.player:id/guide_skipbtn");
+		//robaClickOnView("cn.kuwo.player:id/guide_skipbtn");
+		isFirstStart = true;
+		//solo.waitForActivity("cn.kuwo.player.activities.MainActivity");
+			
+		//robaClickOnView("cn.kuwo.player:id/only_wifi_guide_delete");
 		
 		Log.d(TAG, "Play random music.");
 		
@@ -45,6 +51,46 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 	}
 	
 	private void playMusic() {
+		if (APK_VERSION.equals("6.3.9.0_changxin09")) {
+			solo.waitForText("最新单曲");
+			
+			Log.d(TAG, "Go into newest single song.");
+			
+			solo.clickOnText("最新单曲");
+			
+			solo.sleep(5000);
+			
+			//solo.clickOnText("全部");
+			
+			Log.d(TAG, "Play all.");
+			
+			//Double click to avoid the ADs.
+			
+			robaClickOnView("cn.kuwo.player:id/library_music_list_batch_play_text");
+			
+			robaClickOnView("cn.kuwo.player:id/library_music_list_batch_play_text");
+			
+			//Click to avoid tips.
+			solo.waitForText("我知道了");
+			
+			solo.clickOnText("我知道了");			
+			
+			Log.d(TAG, "Play songs.");
+			
+			int remainSongs = 8;
+			
+			while (remainSongs > 0) {
+				robaRandomSleep(150, 300);
+				robaClickOnView("cn.kuwo.player:id/Main_BtnNext");
+				remainSongs--;
+				Log.d(TAG, "Play next song. Remain song count:" + remainSongs +".");
+				
+			}
+			
+			solo.sleep(5000);
+			Log.d(TAG, "Done.");
+		}
+		/*
 		solo.waitForActivity("cn.kuwo.player.activities.MainActivity");
 		
 		robaRandomSleep(5);
@@ -75,12 +121,13 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 		
 		Log.d(TAG, "Random choose one song.");
 		
-		solo.goBack();	
+		solo.goBack();*/	
 	}
 	
-	private void CheckFirstStart(String version) {
-		Log.d(TAG, "Check apk version for first start: " + version + ".");
-		if (version.equals("6.6.6.0")) {
+	private void checkFirstStart() {
+		Log.d(TAG, "Check apk version for first start: " + APK_VERSION + ".");
+		if (APK_VERSION.equals("6.6.6.0")) {
+			solo.sleep(10000);
 			if (robaWaitForViewByResourceId("cn.kuwo.player:id/guide_skipbtn") == true) {
 				robaClickOnView("cn.kuwo.player:id/guide_skipbtn");
 				isFirstStart = true;
@@ -88,7 +135,16 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 				
 				robaClickOnView("cn.kuwo.player:id/only_wifi_guide_delete");
 			}
-		}	
+		} else if (APK_VERSION.equals("6.3.9.0_changxin09")) {
+			solo.sleep(10000);
+			if (robaWaitForViewByResourceId("cn.kuwo.player:id/menu") == true) {
+				Log.d(TAG, "First start of version 6.3.9_changxin09 found.");
+				robaClickOnView("cn.kuwo.player:id/downloading_layout");
+				robaRandomSleep(8);
+				solo.goBack();
+				solo.clickOnScreen(200, 50);
+			}
+		}
 	}
 
 	@Override
