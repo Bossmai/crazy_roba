@@ -76,19 +76,24 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 			
 			//Click to avoid tips.
 			
-			if (isFirstStart) {
-				solo.waitForText("我知道了");
+			if (solo.waitForText("我知道了")) {
+				
 				
 				solo.clickOnText("我知道了");			
 			}
 			
 			Log.d(TAG, "Play songs.");
 			
-			int remainSongs = 8;
+			int remainSongs = 10;
 			
 			while (remainSongs > 0) {
-				robaRandomSleep(150, 300);
+				robaRandomSleep(50, 150);
+				if (remainSongs == 10) {
+					solo.goBack();
+				}
+				
 				robaClickOnView("cn.kuwo.player:id/Main_BtnNext");
+				
 				remainSongs--;
 				Log.d(TAG, "Play next song. Remain song count:" + remainSongs +".");
 				
@@ -146,11 +151,18 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 			solo.sleep(10000);
 			if (robaWaitForViewByResourceId("cn.kuwo.player:id/menu") == true) {
 				Log.d(TAG, "First start of version 6.3.9_changxin09 found.");
+				solo.sleep(5000);
+				if (solo.waitForText("取消")) {
+					solo.clickOnText("取消");
+				}
 				robaClickOnView("cn.kuwo.player:id/downloading_layout");
 				robaRandomSleep(8);
 				solo.goBack();
+				solo.sleep(5000);
+				solo.goBack();
 				
 				isFirstStart = true;
+				
 			}
 		}
 	}
