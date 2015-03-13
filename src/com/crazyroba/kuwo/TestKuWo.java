@@ -36,17 +36,26 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 	}
 	
 	public void test1() {
-		checkFirstStart();
+		try {
+			checkFirstStart();
+			isFirstStart = true;
+			Log.d(TAG, "Play random music.");		
+			playMusic();
+			Log.d(TAG, "Monkey success.");
+		} catch (Exception e) {
+			Log.d(TAG, "Monkey failed.");
+		}
+		
+		
+		
 		//robaWaitForViewByResourceId("cn.kuwo.player:id/guide_skipbtn");
 		//robaClickOnView("cn.kuwo.player:id/guide_skipbtn");
-		isFirstStart = true;
+		
 		//solo.waitForActivity("cn.kuwo.player.activities.MainActivity");
 			
 		//robaClickOnView("cn.kuwo.player:id/only_wifi_guide_delete");
 		
-		Log.d(TAG, "Play random music.");
 		
-		playMusic();
 		
 	}
 	
@@ -171,5 +180,4 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 	public void tearDown() throws Exception {
 		solo.finishOpenedActivities();
 	}
-
 }
