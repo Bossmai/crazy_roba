@@ -69,7 +69,8 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 			
 			solo.clickOnText("最新单曲");
 			
-			solo.sleep(5000);
+			robaWaitForLoaded(5);
+			//solo.sleep(5000);
 			
 			//solo.clickOnText("全部");
 			
