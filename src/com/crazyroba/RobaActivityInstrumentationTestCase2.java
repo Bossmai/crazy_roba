@@ -200,7 +200,7 @@ public class RobaActivityInstrumentationTestCase2 extends ActivityInstrumentatio
     	}
     }
     
-    protected boolean waitForLoaded(int timeoutSecond) {
+    protected boolean robaWaitForLoaded(int timeoutSecond) {
     	return solo.waitForActivity(solo.getCurrentActivity().toString(), timeoutSecond * 1000);
     }
 }
