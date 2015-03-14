@@ -199,4 +199,8 @@ public class RobaActivityInstrumentationTestCase2 extends ActivityInstrumentatio
         	}
     	}
     }
+    
+    protected boolean waitForLoaded(int timeoutSecond) {
+    	return solo.waitForActivity(solo.getCurrentActivity().toString(), timeoutSecond * 1000);
+    }
 }
