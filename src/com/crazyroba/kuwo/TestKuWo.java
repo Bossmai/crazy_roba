@@ -109,7 +109,7 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 				
 			}
 			
-			solo.sleep(5000);
+			robaWaitForLoaded(5);
 			Log.d(TAG, "Done.");
 		}
 		/*
@@ -149,7 +149,8 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 	private void checkFirstStart() {
 		Log.d(TAG, "Check apk version for first start: " + APK_VERSION + ".");
 		if (APK_VERSION.equals("6.6.6.0")) {
-			solo.sleep(10000);
+			robaWaitForLoaded(10);
+			//solo.sleep(10000);
 			if (robaWaitForViewByResourceId("cn.kuwo.player:id/guide_skipbtn") == true) {
 				robaClickOnView("cn.kuwo.player:id/guide_skipbtn");
 				isFirstStart = true;
@@ -158,10 +159,13 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 				robaClickOnView("cn.kuwo.player:id/only_wifi_guide_delete");
 			}
 		} else if (APK_VERSION.equals("6.3.9.0_changxin09")) {
-			solo.sleep(10000);
+			robaWaitForLoaded(10);
+			//solo.sleep(10000);
 			if (robaWaitForViewByResourceId("cn.kuwo.player:id/menu") == true) {
 				Log.d(TAG, "First start of version 6.3.9_changxin09 found.");
-				solo.sleep(15000);
+
+				robaWaitForLoaded(15);
+				//solo.sleep(15000);
 				if (solo.waitForText("È¡Ïû")) {
 					Log.d(TAG, "Find cancel for the first start!");
 					solo.goBack();
@@ -169,7 +173,8 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 				robaClickOnView("cn.kuwo.player:id/downloading_layout");
 				robaRandomSleep(8);
 				solo.goBack();
-				solo.sleep(5000);
+				robaWaitForLoaded(5);
+				//solo.sleep(5000);
 				
 				isFirstStart = true;
 				
