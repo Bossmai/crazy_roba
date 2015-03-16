@@ -11,13 +11,13 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 	private static final String APK_VERSION = "6.3.9.0_changxin09";
 
 	private static boolean isFirstStart = false;
-	
+
 	//private static final String LAUNCHER_ACTIVITY_FULL_CLASSNAME = "cn.kuwo.player/cn.kuwo.ui.guide.GuideActivity";
 	private static final String LAUNCHER_ACTIVITY_FULL_CLASSNAME = "cn.kuwo.player.activities.EntryActivity";
 	private static final String TAG = "TestKuWo";
 
 	private static Class launcherActivityClass;
-	
+
 	static {
 		try {
 			launcherActivityClass = Class.forName(LAUNCHER_ACTIVITY_FULL_CLASSNAME);
@@ -25,127 +25,127 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	public TestKuWo() throws ClassNotFoundException {
 		super(LAUNCHER_ACTIVITY_FULL_CLASSNAME, launcherActivityClass);
 	}
-	
+
 	@Override
 	protected void setUp() throws Exception {
 		solo = new Solo(getInstrumentation(), getActivity());
 	}
-	
+
 	public void test1() {
 		try {
 			checkFirstStart();
 			isFirstStart = true;
-			Log.d(TAG, "Play random music.");		
+			Log.d(TAG, "Play random music.");
 			playMusic();
 			Log.d(TAG, "Monkey success.");
 		} catch (Exception e) {
 			Log.d(TAG, "Monkey failed.");
 		}
-		
-		
-		
+
+
+
 		//robaWaitForViewByResourceId("cn.kuwo.player:id/guide_skipbtn");
 		//robaClickOnView("cn.kuwo.player:id/guide_skipbtn");
-		
+
 		//solo.waitForActivity("cn.kuwo.player.activities.MainActivity");
-			
+
 		//robaClickOnView("cn.kuwo.player:id/only_wifi_guide_delete");
-		
-		
-		
+
+
+
 	}
-	
+
 	private void playMusic() {
 		if (APK_VERSION.equals("6.3.9.0_changxin09")) {
 			solo.clickOnScreen(200, 50);
-			
-			solo.waitForText("×îÐÂµ¥Çú");
-			
+
+			solo.waitForText("ï¿½ï¿½ï¿½Âµï¿½ï¿½ï¿½");
+
 			Log.d(TAG, "Go into newest single song.");
-			
-			solo.clickOnText("×îÐÂµ¥Çú");
-			
+
+			solo.clickOnText("ï¿½ï¿½ï¿½Âµï¿½ï¿½ï¿½");
+
 			robaWaitForLoaded(5);
 			//solo.sleep(5000);
-			
-			//solo.clickOnText("È«²¿");
-			
+
+			//solo.clickOnText("È«ï¿½ï¿½");
+
 			Log.d(TAG, "Play all.");
-			
+
 			//Double click to avoid the ADs.
-			
+
 			if (isFirstStart) {
 				robaClickOnView("cn.kuwo.player:id/library_music_list_batch_play_text");
 			}
-			
+
 			robaClickOnView("cn.kuwo.player:id/library_music_list_batch_play_text");
-			
+
 			//Click to avoid tips.
-			
-			if (solo.waitForText("ÎÒÖªµÀÁË")) {
-				
-				
-				solo.clickOnText("ÎÒÖªµÀÁË");			
+
+			if (solo.waitForText("ï¿½ï¿½Öªï¿½ï¿½ï¿½ï¿½")) {
+
+
+				solo.clickOnText("ï¿½ï¿½Öªï¿½ï¿½ï¿½ï¿½");
 			}
-			
+
 			Log.d(TAG, "Play songs.");
-			
+
 			int remainSongs = 10;
-			
+
 			while (remainSongs > 0) {
 				robaRandomSleep(50, 100);
 				if (remainSongs == 10) {
 					solo.goBack();
 				}
-				
+
 				robaClickOnView("cn.kuwo.player:id/Main_BtnNext");
-				
+
 				remainSongs--;
 				Log.d(TAG, "Play next song. Remain song count:" + remainSongs +".");
-				
+
 			}
-			
+
 			robaWaitForLoaded(5);
 			Log.d(TAG, "Done.");
 		}
 		/*
 		solo.waitForActivity("cn.kuwo.player.activities.MainActivity");
-		
+
 		robaRandomSleep(5);
-		
-		solo.clickOnText("Çú¿â");
-		
+
+		solo.clickOnText("ï¿½ï¿½ï¿½ï¿½");
+
 		robaWaitForViewByResourceId("cn.kuwo.player:id/tv_library_new_classify");
-		
+
 		robaRandomClickInViews(robaGetViewsWithResourceId(TextView.class, "cn.kuwo.player:id/tv_library_new_classify"));
-		
+
 		Log.d(TAG, "Random choose one song repo.");
-		
+
 		robaRandomSleep(5);
-		
+
 		robaWaitForViewByResourceId("cn.kuwo.player:id/list_music_item");
-		
-		robaRandomDrag(DragDirection.TopButtom, 2);	
-		
-		robaRandomClickInViews(robaGetViewsWithResourceId(RelativeLayout.class, "cn.kuwo.player:id/list_music_item"));		
-		
+
+		robaRandomDrag(DragDirection.TopButtom, 2);
+
+		robaRandomClickInViews(robaGetViewsWithResourceId(RelativeLayout.class, "cn.kuwo.player:id/list_music_item"));
+
 		if (isFirstStart) {
-			solo.waitForText("ÎÒÖªµÀÁË");
+			solo.waitForText("ï¿½ï¿½Öªï¿½ï¿½ï¿½ï¿½");
 			//robaWaitForViewByResourceId("cn.kuwo.player:id/kuwo_alert_dialog_button1");
-			solo.clickOnText("ÎÒÖªµÀÁË");
+			solo.clickOnText("ï¿½ï¿½Öªï¿½ï¿½ï¿½ï¿½");
 		}
-		
+
 		robaRandomSleep(50, 100);
-		
+
 		Log.d(TAG, "Random choose one song.");
-		
-		solo.goBack();*/	
+
+		solo.goBack();*/
 	}
-	
+
 	private void checkFirstStart() {
 		Log.d(TAG, "Check apk version for first start: " + APK_VERSION + ".");
 		if (APK_VERSION.equals("6.6.6.0")) {
@@ -154,15 +154,14 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 				robaClickOnView("cn.kuwo.player:id/guide_skipbtn");
 				isFirstStart = true;
 				solo.waitForActivity("cn.kuwo.player.activities.MainActivity");
-				
+
 				robaClickOnView("cn.kuwo.player:id/only_wifi_guide_delete");
 			}
 		} else if (APK_VERSION.equals("6.3.9.0_changxin09")) {
-			robaWaitForLoaded(10);
 //			if (robaWaitForViewByResourceId("cn.kuwo.player:id/menu") == true) {
 //				Log.d(TAG, "First start of version 6.3.9_changxin09 found.");
 				robaWaitForLoaded(15);
-				if (solo.waitForText("^È¡Ïû$")) {
+				if (solo.waitForText("^È¡ï¿½ï¿½$")) {
 					Log.d(TAG, "Find cancel for the first start!");
 					solo.goBack();
 				}
@@ -170,9 +169,9 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 				robaRandomSleep(8);
 				solo.goBack();
 				robaWaitForLoaded(5);
-				
+
 				isFirstStart = true;
-				
+
 //			}
 		}
 	}
