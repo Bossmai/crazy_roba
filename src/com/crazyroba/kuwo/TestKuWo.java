@@ -36,17 +36,26 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 	}
 	
 	public void test1() {
-		checkFirstStart();
+		try {
+			checkFirstStart();
+			isFirstStart = true;
+			Log.d(TAG, "Play random music.");		
+			playMusic();
+			Log.d(TAG, "Monkey success.");
+		} catch (Exception e) {
+			Log.d(TAG, "Monkey failed.");
+		}
+		
+		
+		
 		//robaWaitForViewByResourceId("cn.kuwo.player:id/guide_skipbtn");
 		//robaClickOnView("cn.kuwo.player:id/guide_skipbtn");
-		isFirstStart = true;
+		
 		//solo.waitForActivity("cn.kuwo.player.activities.MainActivity");
 			
 		//robaClickOnView("cn.kuwo.player:id/only_wifi_guide_delete");
 		
-		Log.d(TAG, "Play random music.");
 		
-		playMusic();
 		
 	}
 	
@@ -60,7 +69,8 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 			
 			solo.clickOnText("最新单曲");
 			
-			solo.sleep(5000);
+			robaWaitForLoaded(5);
+			//solo.sleep(5000);
 			
 			//solo.clickOnText("全部");
 			
@@ -99,7 +109,7 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 				
 			}
 			
-			solo.sleep(5000);
+			robaWaitForLoaded(5);
 			Log.d(TAG, "Done.");
 		}
 		/*
@@ -139,7 +149,7 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 	private void checkFirstStart() {
 		Log.d(TAG, "Check apk version for first start: " + APK_VERSION + ".");
 		if (APK_VERSION.equals("6.6.6.0")) {
-			solo.sleep(10000);
+			robaWaitForLoaded(10);
 			if (robaWaitForViewByResourceId("cn.kuwo.player:id/guide_skipbtn") == true) {
 				robaClickOnView("cn.kuwo.player:id/guide_skipbtn");
 				isFirstStart = true;
@@ -148,22 +158,22 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 				robaClickOnView("cn.kuwo.player:id/only_wifi_guide_delete");
 			}
 		} else if (APK_VERSION.equals("6.3.9.0_changxin09")) {
-			solo.sleep(10000);
-			if (robaWaitForViewByResourceId("cn.kuwo.player:id/menu") == true) {
-				Log.d(TAG, "First start of version 6.3.9_changxin09 found.");
-				solo.sleep(15000);
-				if (solo.waitForText("取消")) {
+			robaWaitForLoaded(10);
+//			if (robaWaitForViewByResourceId("cn.kuwo.player:id/menu") == true) {
+//				Log.d(TAG, "First start of version 6.3.9_changxin09 found.");
+				robaWaitForLoaded(15);
+				if (solo.waitForText("^取消$")) {
 					Log.d(TAG, "Find cancel for the first start!");
 					solo.goBack();
 				}
 				robaClickOnView("cn.kuwo.player:id/downloading_layout");
 				robaRandomSleep(8);
 				solo.goBack();
-				solo.sleep(5000);
+				robaWaitForLoaded(5);
 				
 				isFirstStart = true;
 				
-			}
+//			}
 		}
 	}
 
@@ -171,5 +181,4 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 	public void tearDown() throws Exception {
 		solo.finishOpenedActivities();
 	}
-
 }
