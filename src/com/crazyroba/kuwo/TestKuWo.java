@@ -64,11 +64,11 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 		if (APK_VERSION.equals("6.3.9.0_changxin09")) {
 			robaDrag(DragDirection.Right);
 			
-			solo.waitForText("最新单曲");
+			solo.waitForText("日最新单曲");
 			
 			Log.d(TAG, "Go into newest single song.");
 			
-			solo.clickOnText("最新单曲");
+			solo.clickOnText("日最新单曲");
 			
 			robaWaitForLoaded(5);
 			//solo.sleep(5000);
