@@ -62,7 +62,7 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 	
 	private void playMusic() {
 		if (APK_VERSION.equals("6.3.9.0_changxin09")) {
-			solo.clickOnScreen(200, 50);
+			robaDrag(DragDirection.Right);
 			
 			solo.waitForText("×îÐÂµ¥Çú");
 			
