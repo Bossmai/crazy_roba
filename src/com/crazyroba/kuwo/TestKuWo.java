@@ -8,7 +8,7 @@ import com.crazyroba.RobaActivityInstrumentationTestCase2;
 import com.jayway.android.robotium.solo.Solo;
 
 public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
-	private static final String APK_VERSION = "6.3.9.0_changxin09";
+	private static final String APK_VERSION = "6.6.7_712";
 
 	private static boolean isFirstStart = false;
 	
@@ -69,6 +69,54 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 			Log.d(TAG, "Go into newest single song.");
 			
 			solo.clickOnText("日最新单曲");
+			
+			robaWaitForLoaded(5);
+			//solo.sleep(5000);
+			
+			//solo.clickOnText("全部");
+			
+			Log.d(TAG, "Play all.");
+			
+			//Double click to avoid the ADs.
+			
+			if (isFirstStart) {
+				robaClickOnView("cn.kuwo.player:id/library_music_list_batch_play_text");
+			}
+			
+			robaClickOnView("cn.kuwo.player:id/library_music_list_batch_play_text");
+			
+			//Click to avoid tips.
+			
+			if (solo.waitForText("我知道了")) {
+				
+				
+				solo.clickOnText("我知道了");			
+			}
+			
+			Log.d(TAG, "Play songs.");
+			
+			int remainSongs = 10;
+			
+			while (remainSongs > 0) {
+				robaRandomSleep(50, 100);
+				if (remainSongs == 10) {
+					solo.goBack();
+				}
+				
+				robaClickOnView("cn.kuwo.player:id/Main_BtnNext");
+				
+				remainSongs--;
+				Log.d(TAG, "Play next song. Remain song count:" + remainSongs +".");
+				
+			}
+			
+			robaWaitForLoaded(5);
+			Log.d(TAG, "Done.");
+		} else if (APK_VERSION.equals("6.6.7_712")) {			
+			solo.waitForText("日最新单曲");
+			
+			solo.clickOnText("日最新单曲");			
+			Log.d(TAG, "Go into newest single song.");
 			
 			robaWaitForLoaded(5);
 			//solo.sleep(5000);
@@ -175,6 +223,22 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 				isFirstStart = true;
 				
 //			}
+		} else if (APK_VERSION.equals("6.6.7_712")) {
+			robaWaitForLoaded(10);
+			Log.d(TAG, "Wait for the initialization.");
+			
+			if (robaWaitForViewByResourceId("cn.kuwo.player:id/guide_skipbtn") == true) {
+				robaClickOnView("cn.kuwo.player:id/guide_skipbtn");
+				Log.d(TAG, "Click on skipping guide.");
+
+				isFirstStart = true;
+				
+				robaWaitForLoaded(10);
+				Log.d(TAG, "Waitting for the main activity.");
+
+				robaClickOnView("cn.kuwo.player:id/only_wifi_guide_delete");
+				Log.d(TAG, "Click on wifi guide delete.");				
+			}
 		}
 	}
 
