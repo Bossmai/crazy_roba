@@ -224,20 +224,30 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 				
 //			}
 		} else if (APK_VERSION.equals("6.6.7_712")) {
-			robaWaitForLoaded(10);
+			robaWaitForLoaded(20);
 			Log.d(TAG, "Wait for the initialization.");
 			
 			if (robaWaitForViewByResourceId("cn.kuwo.player:id/guide_skipbtn") == true) {
 				robaClickOnView("cn.kuwo.player:id/guide_skipbtn");
+				
+
+				if (solo.waitForText("^È¡Ïû$")) {
+					Log.d(TAG, "Find cancel for the first start!");
+					solo.goBack();
+				}
+				
 				Log.d(TAG, "Click on skipping guide.");
 
 				isFirstStart = true;
 				
-				robaWaitForLoaded(10);
+				robaWaitForLoaded(20);
 				Log.d(TAG, "Waitting for the main activity.");
 
 				robaClickOnView("cn.kuwo.player:id/only_wifi_guide_delete");
-				Log.d(TAG, "Click on wifi guide delete.");				
+				Log.d(TAG, "Click on wifi guide delete.");	
+				
+				robaWaitForLoaded(20);
+				robaDrag(DragDirection.Buttom);
 			}
 		}
 	}
