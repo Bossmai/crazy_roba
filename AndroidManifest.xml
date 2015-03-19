@@ -8,7 +8,7 @@
 
     <instrumentation
         android:name="android.test.InstrumentationTestRunner"
-        android:targetPackage="PACKAGE" />
+        android:targetPackage="com.reader.freereader" />
 
     <application
         android:icon="@drawable/ic_launcher"
