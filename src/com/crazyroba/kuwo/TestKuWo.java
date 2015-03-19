@@ -247,7 +247,8 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 				Log.d(TAG, "Click on wifi guide delete.");	
 				
 				robaWaitForLoaded(20);
-				robaDrag(DragDirection.Buttom);
+				
+				solo.scrollToTop();
 			}
 		}
 	}
