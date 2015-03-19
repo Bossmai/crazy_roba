@@ -15,6 +15,8 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 	//private static final String LAUNCHER_ACTIVITY_FULL_CLASSNAME = "cn.kuwo.player/cn.kuwo.ui.guide.GuideActivity";
 	private static final String LAUNCHER_ACTIVITY_FULL_CLASSNAME = "cn.kuwo.player.activities.EntryActivity";
 	private static final String TAG = "TestKuWo";
+	private static final int WAITCOUNT = 3;
+	private static final int PLAYSONGS = 8;
 
 	private static Class launcherActivityClass;
 	
@@ -95,7 +97,7 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 			
 			Log.d(TAG, "Play songs.");
 			
-			int remainSongs = 10;
+			int remainSongs = PLAYSONGS;
 			
 			while (remainSongs > 0) {
 				robaRandomSleep(50, 100);
@@ -112,10 +114,21 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 			
 			robaWaitForLoaded(5);
 			Log.d(TAG, "Done.");
-		} else if (APK_VERSION.equals("6.6.7_712")) {			
-			solo.waitForText("日最新单曲");
+		} else if (APK_VERSION.equals("6.6.7_712")) {
+			int i = WAITCOUNT;
+			robaWaitForLoaded(5);
+			while (true) {
+				Log.d(TAG, "Wait for daily new song.");
+				solo.scrollToTop();
+				if (solo.waitForText("日最新单曲")) {
+					Log.d(TAG, "Find daily new song.");
+					break;
+				}			
+			}
 			
-			solo.clickOnText("日最新单曲");			
+			
+			solo.scrollToTop();
+			solo.clickOnText("日最新单曲");
 			Log.d(TAG, "Go into newest single song.");
 			
 			robaWaitForLoaded(5);
@@ -127,9 +140,9 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 			
 			//Double click to avoid the ADs.
 			
-			if (isFirstStart) {
-				robaClickOnView("cn.kuwo.player:id/library_music_list_batch_play_text");
-			}
+			//if (isFirstStart) {
+			//	robaClickOnView("cn.kuwo.player:id/library_music_list_batch_play_text");
+			//}
 			
 			robaClickOnView("cn.kuwo.player:id/library_music_list_batch_play_text");
 			
@@ -143,7 +156,7 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 			
 			Log.d(TAG, "Play songs.");
 			
-			int remainSongs = 10;
+			int remainSongs = 8;
 			
 			while (remainSongs > 0) {
 				robaRandomSleep(50, 100);
@@ -227,29 +240,60 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 			robaWaitForLoaded(20);
 			Log.d(TAG, "Wait for the initialization.");
 			
-			if (robaWaitForViewByResourceId("cn.kuwo.player:id/guide_skipbtn") == true) {
-				robaClickOnView("cn.kuwo.player:id/guide_skipbtn");
+			int i = WAITCOUNT;
+			
+			while (i > 0) {
+				Log.d(TAG, "Wait for skip btn");
 				
+				
+				if (robaWaitForViewByResourceId("cn.kuwo.player:id/guide_skipbtn"))  {
+					isFirstStart = true;
 
-				if (solo.waitForText("^取消$")) {
-					Log.d(TAG, "Find cancel for the first start!");
-					solo.goBack();
+					Log.d(TAG, "Click on skipping guide.");
+					
+					robaClickOnView("cn.kuwo.player:id/guide_skipbtn");
+					break;
 				}
+				solo.sleep(5000);
+				i--;
+			}
+			
+			if (isFirstStart) {
+				i = WAITCOUNT;
 				
-				Log.d(TAG, "Click on skipping guide.");
-
-				isFirstStart = true;
+				while (i > 0) {
+					Log.d(TAG, "Wait for cancel");
+					
+					if (solo.waitForText("^取消$")) {						
+						Log.d(TAG, "Find cancel for the first start!");
+						solo.goBack();
+						break;
+					}
+					
+					solo.sleep(5000);
+					i--;
+				}
 				
 				robaWaitForLoaded(20);
 				Log.d(TAG, "Waitting for the main activity.");
-
-				robaClickOnView("cn.kuwo.player:id/only_wifi_guide_delete");
-				Log.d(TAG, "Click on wifi guide delete.");	
 				
-				robaWaitForLoaded(20);
+				i = WAITCOUNT;
+				while (i > 0) {
+					if (robaWaitForViewByResourceId("cn.kuwo.player:id/only_wifi_guide_delete")) {
+						robaClickOnView("cn.kuwo.player:id/only_wifi_guide_delete");
+						Log.d(TAG, "Click on wifi guide delete.");
+						break;
+					}
+					
+					solo.sleep(5000);
+					i--;					
+				}			
 				
-				solo.scrollToTop();
 			}
+			
+			solo.sleep(5000);
+			solo.scrollToTop();
+			
 		}
 	}
 
