@@ -258,10 +258,20 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 			
 			Log.d(TAG, "Wait for cancel button.");
 			
-			
-			if (solo.waitForText("^取消$")) {
-				Log.d(TAG, "Find cancel for the first start!");
-				solo.goBack();
+			i = 10;
+			while (i > 0) {
+				Log.d(TAG, "Wait for the cancel button.");
+				if (solo.waitForText("^取消$")) {
+					Log.d(TAG, "Cancel button found!");
+					Log.d(TAG, "Find cancel for the first start!");
+					solo.goBack();
+					isFirstStart = true;
+					break;
+				} else {
+					i--;
+					solo.sleep(10000);
+					solo.scrollToTop();
+				}
 			}
 			
 			robaWaitForLoaded(20);
