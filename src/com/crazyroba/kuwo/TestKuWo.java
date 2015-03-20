@@ -240,58 +240,38 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 			robaWaitForLoaded(20);
 			Log.d(TAG, "Wait for the initialization.");
 			
-			int i = WAITCOUNT;
+			int i = 30;
 			
 			while (i > 0) {
-				Log.d(TAG, "Wait for skip btn");
-				
-				
-				if (robaWaitForViewByResourceId("cn.kuwo.player:id/guide_skipbtn"))  {
-					isFirstStart = true;
-
-					Log.d(TAG, "Click on skipping guide.");
-					
+				Log.d(TAG, "Wait for the guide skin button.");
+				if (robaWaitForViewByResourceId("cn.kuwo.player:id/guide_skipbtn") == true) {
+					Log.d(TAG, "Guide skin button found!");
 					robaClickOnView("cn.kuwo.player:id/guide_skipbtn");
+					isFirstStart = true;
+					Log.d(TAG, "Skip guide.");
 					break;
-				}
-				solo.sleep(5000);
-				i--;
-			}
-			
-			if (isFirstStart) {
-				i = WAITCOUNT;
-				
-				while (i > 0) {
-					Log.d(TAG, "Wait for cancel");
-					
-					if (solo.waitForText("^取消$")) {						
-						Log.d(TAG, "Find cancel for the first start!");
-						solo.goBack();
-						break;
-					}
-					
-					solo.sleep(5000);
+				} else {
 					i--;
+					solo.sleep(10000);
 				}
-				
-				robaWaitForLoaded(20);
-				Log.d(TAG, "Waitting for the main activity.");
-				
-				i = WAITCOUNT;
-				while (i > 0) {
-					if (robaWaitForViewByResourceId("cn.kuwo.player:id/only_wifi_guide_delete")) {
-						robaClickOnView("cn.kuwo.player:id/only_wifi_guide_delete");
-						Log.d(TAG, "Click on wifi guide delete.");
-						break;
-					}
-					
-					solo.sleep(5000);
-					i--;					
-				}			
-				
 			}
 			
-			solo.sleep(5000);
+			Log.d(TAG, "Wait for cancel button.");
+			
+			
+			if (solo.waitForText("^取消$")) {
+				Log.d(TAG, "Find cancel for the first start!");
+				solo.goBack();
+			}
+			
+			robaWaitForLoaded(20);
+			Log.d(TAG, "Waitting for the main activity.");
+
+			robaClickOnView("cn.kuwo.player:id/only_wifi_guide_delete");
+			Log.d(TAG, "Click on wifi guide delete.");	
+			
+			robaWaitForLoaded(20);
+			
 			solo.scrollToTop();
 			
 		}
