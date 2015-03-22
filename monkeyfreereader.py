@@ -45,4 +45,4 @@ while time.time() < end_time:
     z_time = random.randint(0, 5)
     MonkeyRunner.sleep(z_time)
     print "Sleep: " + str(z_time)
-print "Test finish."
+print "Monkey success."
