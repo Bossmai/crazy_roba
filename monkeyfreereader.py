@@ -9,8 +9,8 @@ MAX_X = 220
 MIN_Y = 20
 MAX_Y = 400
 
-package = 'com.reader.freereader'
-activity = 'com.reader.freereader.FirstActivity'
+package = 'com.news.newsshixun'
+activity = 'com.news.newsshixun.FirstActivity'
 runComponent = package + '/' + activity
 
 print "Wait For connection..."
@@ -45,4 +45,4 @@ while time.time() < end_time:
     z_time = random.randint(0, 5)
     MonkeyRunner.sleep(z_time)
     print "Sleep: " + str(z_time)
-print "Test finish."
+print "Monkey success."
