@@ -250,6 +250,12 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 					isFirstStart = true;
 					Log.d(TAG, "Skip guide.");
 					break;
+				} else if (solo.waitForText("^安卓市场$")) {
+					Log.d(TAG, "Find android market!");
+					solo.clickOnText("立即体验");
+					isFirstStart = false;
+					Log.d(TAG, "Skip android market");
+					break;
 				} else {
 					i--;
 					solo.sleep(10000);
@@ -258,27 +264,33 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 			
 			Log.d(TAG, "Wait for cancel button.");
 			
-			i = 10;
-			while (i > 0) {
-				Log.d(TAG, "Wait for the cancel button.");
-				if (solo.waitForText("^取消$")) {
-					Log.d(TAG, "Cancel button found!");
-					Log.d(TAG, "Find cancel for the first start!");
-					solo.goBack();
-					isFirstStart = true;
-					break;
-				} else {
-					i--;
-					solo.sleep(10000);
-					solo.scrollToTop();
+			if (isFirstStart) {
+				i = 10;
+				while (i > 0) {
+					Log.d(TAG, "Wait for the cancel button.");
+					if (solo.waitForText("^取消$")) {
+						Log.d(TAG, "Cancel button found!");
+						Log.d(TAG, "Find cancel for the first start!");
+						solo.goBack();
+						isFirstStart = true;
+						break;
+					} else {
+						i--;
+						solo.sleep(10000);
+						solo.scrollToTop();
+					}
 				}
 			}
+			
 			
 			robaWaitForLoaded(20);
 			Log.d(TAG, "Waitting for the main activity.");
 
-			robaClickOnView("cn.kuwo.player:id/only_wifi_guide_delete");
-			Log.d(TAG, "Click on wifi guide delete.");	
+			if (isFirstStart) {
+				robaClickOnView("cn.kuwo.player:id/only_wifi_guide_delete");
+				Log.d(TAG, "Click on wifi guide delete.");
+			}
+				
 			
 			robaWaitForLoaded(20);
 			
