@@ -1,5 +1,7 @@
 package com.crazyroba.kuwo;
 
+import java.util.Random;
+
 import android.util.Log;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -17,6 +19,8 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 	private static final String TAG = "TestKuWo";
 	private static final int WAITCOUNT = 3;
 	private static final int PLAYSONGS = 8;
+	private static final int MIN_PLAYSEC = 120;
+	private static final int MAX_PLAYSEC = 240;
 
 	private static Class launcherActivityClass;
 	
@@ -40,9 +44,13 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 	public void test1() {
 		try {
 			checkFirstStart();
-			isFirstStart = true;
-			Log.d(TAG, "Play random music.");		
-			playMusic();
+			Log.d(TAG, "Play random music.");
+			Random r = new Random();
+			if (r.nextInt() % 2 == 0) {
+				playDailyMusic();
+			} else {				
+				playBillBoard();
+			}
 			Log.d(TAG, "Monkey success.");
 		} catch (Exception e) {
 			Log.d(TAG, "Monkey failed.");
@@ -62,7 +70,7 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 		
 	}
 	
-	private void playMusic() {
+	private void playDailyMusic() {
 		if (APK_VERSION.equals("6.3.9.0_changxin09")) {
 			robaDrag(DragDirection.Right);
 			
@@ -73,13 +81,8 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 			solo.clickOnText("日最新单曲");
 			
 			robaWaitForLoaded(5);
-			//solo.sleep(5000);
-			
-			//solo.clickOnText("全部");
 			
 			Log.d(TAG, "Play all.");
-			
-			//Double click to avoid the ADs.
 			
 			if (isFirstStart) {
 				robaClickOnView("cn.kuwo.player:id/library_music_list_batch_play_text");
@@ -100,7 +103,7 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 			int remainSongs = PLAYSONGS;
 			
 			while (remainSongs > 0) {
-				robaRandomSleep(50, 100);
+				robaRandomSleep(MIN_PLAYSEC, MAX_PLAYSEC);
 				if (remainSongs == 10) {
 					solo.goBack();
 				}
@@ -132,38 +135,121 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 			Log.d(TAG, "Go into newest single song.");
 			
 			robaWaitForLoaded(5);
-			//solo.sleep(5000);
-			
-			//solo.clickOnText("全部");
 			
 			Log.d(TAG, "Play all.");
 			
-			//Double click to avoid the ADs.
-			
-			//if (isFirstStart) {
-			//	robaClickOnView("cn.kuwo.player:id/library_music_list_batch_play_text");
-			//}
-			
 			robaClickOnView("cn.kuwo.player:id/library_music_list_batch_play_text");
-			
-			//Click to avoid tips.
-			
-			if (solo.waitForText("我知道了")) {
-				
+
+			if (solo.waitForText("我知道了")) {				
 				
 				solo.clickOnText("我知道了");			
 			}
 			
 			Log.d(TAG, "Play songs.");
 			
-			int remainSongs = 8;
+			int remainSongs = PLAYSONGS;
 			
 			while (remainSongs > 0) {
-				robaRandomSleep(50, 100);
-				if (remainSongs == 10) {
+				if (remainSongs == PLAYSONGS) {
+					robaClickOnView("cn.kuwo.player:id/clickview");
+					robaWaitForLoaded(10);
+					if (isFirstStart) {
+						solo.goBack();
+						robaWaitForLoaded(10);
+						robaClickOnView("cn.kuwo.player:id/clickview");
+						robaWaitForLoaded(10);
+					}			
+					robaClickOnView("cn.kuwo.player:id/Nowplay_BtnPlayMode");
+					robaWaitForLoaded(10);
 					solo.goBack();
 				}
+
+				robaRandomSleep(MIN_PLAYSEC, MAX_PLAYSEC);
+			
+				robaClickOnView("cn.kuwo.player:id/Main_BtnNext");
+			
+				remainSongs--;
+				Log.d(TAG, "Play next song. Remain song count:" + remainSongs +".");
+			
+			}
+		
+			robaWaitForLoaded(5);
+			Log.d(TAG, "Done.");
 				
+		}
+	}
+	
+	private void playBillBoard() {
+		if (APK_VERSION.equals("6.6.7_712")) {
+			int i = WAITCOUNT;
+			robaWaitForLoaded(5);
+			while (true) {
+				Log.d(TAG, "Wait for billboard.");
+				solo.scrollToTop();
+				if (solo.waitForText("排行榜")) {
+					Log.d(TAG, "Find billboard.");
+					break;
+				}			
+			}			
+			
+			solo.scrollToTop();
+			solo.clickOnText("排行榜");
+			Log.d(TAG, "Go into billboard.");
+			
+			robaWaitForLoaded(5);
+			
+			Log.d(TAG, "Play all.");
+			
+			solo.clickOnText("酷我热歌榜");
+			robaRandomClickInViews(robaGetViewsWithResourceId(android.widget.RelativeLayout.class, "cn.kuwo.player:id/list_content"));
+
+			/*String[] boards = {"酷我新歌榜", "酷我热歌榜 ", "酷我飙升榜"};
+			Random r = new Random();
+			int index = r.nextInt(boards.length);
+			
+			while (true) {
+				Log.d(TAG, "Wait for specific billboard.");
+				solo.scrollToTop();
+				if (solo.waitForText(boards[index])) {
+					Log.d(TAG, "Find billboard.");
+					break;
+				}			
+			}
+			
+			solo.scrollToTop();
+			solo.clickOnText(boards[index]);*/
+			
+			Log.d(TAG, "Go specific billboard.");
+			
+			robaWaitForLoaded(10);
+			solo.clickOnText("全部播放");
+			//robaClickOnView("cn.kuwo.player:id/library_music_list_batch_play_btn");
+
+			if (solo.waitForText("我知道了")) {
+				
+				solo.clickOnText("我知道了");			
+			}
+			
+			Log.d(TAG, "Play songs.");
+			
+			int remainSongs = PLAYSONGS;
+			
+			while (remainSongs > 0) {
+				if (remainSongs == PLAYSONGS) {
+					robaClickOnView("cn.kuwo.player:id/clickview");
+					robaWaitForLoaded(10);
+					if (isFirstStart) {
+						solo.goBack();
+						robaWaitForLoaded(10);
+						robaClickOnView("cn.kuwo.player:id/clickview");
+						robaWaitForLoaded(10);
+					}			
+					robaClickOnView("cn.kuwo.player:id/Nowplay_BtnPlayMode");
+					robaWaitForLoaded(10);
+					solo.goBack();
+				}				
+
+				robaRandomSleep(MIN_PLAYSEC, MAX_PLAYSEC);
 				robaClickOnView("cn.kuwo.player:id/Main_BtnNext");
 				
 				remainSongs--;
@@ -174,38 +260,6 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 			robaWaitForLoaded(5);
 			Log.d(TAG, "Done.");
 		}
-		/*
-		solo.waitForActivity("cn.kuwo.player.activities.MainActivity");
-		
-		robaRandomSleep(5);
-		
-		solo.clickOnText("曲库");
-		
-		robaWaitForViewByResourceId("cn.kuwo.player:id/tv_library_new_classify");
-		
-		robaRandomClickInViews(robaGetViewsWithResourceId(TextView.class, "cn.kuwo.player:id/tv_library_new_classify"));
-		
-		Log.d(TAG, "Random choose one song repo.");
-		
-		robaRandomSleep(5);
-		
-		robaWaitForViewByResourceId("cn.kuwo.player:id/list_music_item");
-		
-		robaRandomDrag(DragDirection.TopButtom, 2);	
-		
-		robaRandomClickInViews(robaGetViewsWithResourceId(RelativeLayout.class, "cn.kuwo.player:id/list_music_item"));		
-		
-		if (isFirstStart) {
-			solo.waitForText("我知道了");
-			//robaWaitForViewByResourceId("cn.kuwo.player:id/kuwo_alert_dialog_button1");
-			solo.clickOnText("我知道了");
-		}
-		
-		robaRandomSleep(50, 100);
-		
-		Log.d(TAG, "Random choose one song.");
-		
-		solo.goBack();*/	
 	}
 	
 	private void checkFirstStart() {
@@ -221,21 +275,17 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 			}
 		} else if (APK_VERSION.equals("6.3.9.0_changxin09")) {
 			robaWaitForLoaded(10);
-//			if (robaWaitForViewByResourceId("cn.kuwo.player:id/menu") == true) {
-//				Log.d(TAG, "First start of version 6.3.9_changxin09 found.");
-				robaWaitForLoaded(15);
-				if (solo.waitForText("^取消$")) {
-					Log.d(TAG, "Find cancel for the first start!");
-					solo.goBack();
-				}
-				robaClickOnView("cn.kuwo.player:id/downloading_layout");
-				robaRandomSleep(8);
+			robaWaitForLoaded(15);
+			if (solo.waitForText("^取消$")) {
+				Log.d(TAG, "Find cancel for the first start!");
 				solo.goBack();
-				robaWaitForLoaded(5);
+			}
+			robaClickOnView("cn.kuwo.player:id/downloading_layout");
+			robaRandomSleep(8);
+			solo.goBack();
+			robaWaitForLoaded(5);
 				
-				isFirstStart = true;
-				
-//			}
+			isFirstStart = true;
 		} else if (APK_VERSION.equals("6.6.7_712")) {
 			robaWaitForLoaded(20);
 			Log.d(TAG, "Wait for the initialization.");
@@ -282,7 +332,6 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 				}
 			}
 			
-			
 			robaWaitForLoaded(20);
 			Log.d(TAG, "Waitting for the main activity.");
 
@@ -290,12 +339,10 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 				robaClickOnView("cn.kuwo.player:id/only_wifi_guide_delete");
 				Log.d(TAG, "Click on wifi guide delete.");
 			}
-				
 			
 			robaWaitForLoaded(20);
 			
-			solo.scrollToTop();
-			
+			solo.scrollToTop();		
 		}
 	}
 
