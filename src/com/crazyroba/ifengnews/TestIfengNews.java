@@ -20,9 +20,6 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 	private static final int WAITCOUNT = 10;
 	private static final int NEWS_PER_PAGE = 3;
 	private static final int TYPE_COUNT = 5;
-	private static final int PLAYSONGS = 8;
-	private static final int MIN_PLAYSEC = 120;
-	private static final int MAX_PLAYSEC = 240;
 
 	private static Class launcherActivityClass;
 	
@@ -77,6 +74,7 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 			Random r = new Random();
 			
 			while (i > 0) {
+				robaWaitForLoaded(10);
 				Log.d(TAG, "Remain news type: " + i);
 				int j = NEWS_PER_PAGE;
 				while (j > 0) {
@@ -106,7 +104,7 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 				for (int k = 3; k > 0; k--) {
 					if (r.nextInt() % 2 == 0) {
 						robaDrag(DragDirection.Left);
-						robaRandomSleep(2, 5);
+						robaRandomSleep(5, 8);
 					}
 				}
 				
