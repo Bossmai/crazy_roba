@@ -137,7 +137,7 @@ public class RobaActivityInstrumentationTestCase2 extends ActivityInstrumentatio
     }
     
     protected boolean robaWaitForViewByResourceId(String resourceId) {
-    	int remainTime = 4;
+    	int remainTime = 1;
     	while (remainTime > 0) {
     		Activity activity = solo.getCurrentActivity();       
         	int viewId = activity.getResources().getIdentifier(resourceId, "id" , activity.getPackageName());

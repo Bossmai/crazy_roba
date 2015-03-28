@@ -4,6 +4,7 @@ import java.util.Random;
 
 import android.util.Log;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.crazyroba.RobaActivityInstrumentationTestCase2;
 import com.crazyroba.RobaActivityInstrumentationTestCase2.DragDirection;
@@ -18,7 +19,7 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 	private static final String LAUNCHER_ACTIVITY_FULL_CLASSNAME = "com.ifeng.news2.activity.SplashActivity";
 	private static final String TAG = "TestIfengNews";
 	private static final int WAITCOUNT = 10;
-	private static final int NEWS_PER_PAGE = 3;
+	private static final int NEWS_PER_PAGE = 2;
 	private static final int TYPE_COUNT = 5;
 
 	private static Class launcherActivityClass;
@@ -41,13 +42,8 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 	}
 	
 	public void test1() {
-		try {
-			checkFirstStart();
-			readNews();
-		} catch (Exception e) {
-			Log.d(TAG, "Monkey failed.");
-			solo.takeScreenshot();
-		}		
+		checkFirstStart();
+		readNews();	
 	}
 	
 	private void readNews() {
@@ -77,9 +73,10 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 				robaWaitForLoaded(10);
 				Log.d(TAG, "Remain news type: " + i);
 				int j = NEWS_PER_PAGE;
+				
 				while (j > 0) {
 					Log.d(TAG, "Remain news in this type: " + j);
-					for (int k = 5; k > 0; k--) {
+					for (int k = 1; k > 0; k--) {
 						if (r.nextInt() % 2 == 0) {
 							robaDrag(DragDirection.Top);
 							robaRandomSleep(2, 5);
@@ -87,13 +84,42 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 					}
 					
 					robaRandomClickInViews(robaGetViewsWithResourceId(LinearLayout.class, "com.ifeng.news2:id/channel_list_top_wrapper"));
+					Log.d(TAG, "Click one news.");
 					
 					robaWaitForLoaded(10);
 					
-					for (int l = 8; l > 0; l--) {
-						robaDrag(DragDirection.Top);
-						robaRandomSleep(2, 5);
+					boolean picPage = false;
+					int touchCount = WAITCOUNT / 2;
+					while (touchCount > 0) {
+						Log.d(TAG, "Touch pic news. Remain: " + touchCount);
+						if (robaWaitForViewByResourceId("com.ifeng.news2:id/slide_image")) {
+							picPage = true;
+							break;
+						}
+						
+						solo.sleep(3000);
+						touchCount--;
+					}					
+
+					solo.scrollToTop();
+					
+					
+					if (picPage) {
+						Log.d(TAG, "Pic news found!");
+						for (int l = 3; l > 0; l--) {
+							Log.d(TAG, "Remain right drag: " + l);
+							robaDrag(DragDirection.Right);
+							robaRandomSleep(2, 5);
+						}
+					} else {
+						Log.d(TAG, "Normal news found!");
+						for (int l = 5; l > 0; l--) {
+							Log.d(TAG, "Remain top drag: " + l);
+							robaDrag(DragDirection.Top);
+							robaRandomSleep(2, 5);
+						}
 					}
+					
 					
 					solo.goBack();
 					robaRandomSleep(2, 5);
@@ -101,13 +127,14 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 					j--;					
 				}
 				
-				for (int k = 3; k > 0; k--) {
+				for (int k = 5; k > 0; k--) {
 					if (r.nextInt() % 2 == 0) {
 						robaDrag(DragDirection.Left);
 						robaRandomSleep(5, 8);
 					}
 				}
 				
+				i--;
 			}
 		}
 	}
@@ -138,6 +165,7 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 					robaWaitForLoaded(5);
 					
 					robaClickOnView("com.ifeng.news2:id/viewpager");
+					
 					Log.d(TAG, "Click on guide page.");
 					
 					robaWaitForLoaded(5);
