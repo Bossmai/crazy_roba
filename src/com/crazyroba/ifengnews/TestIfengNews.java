@@ -19,8 +19,9 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 	private static final String LAUNCHER_ACTIVITY_FULL_CLASSNAME = "com.ifeng.news2.activity.SplashActivity";
 	private static final String TAG = "TestIfengNews";
 	private static final int WAITCOUNT = 10;
-	private static final int NEWS_PER_PAGE = 2;
-	private static final int TYPE_COUNT = 5;
+	private static final int NEWS_PER_PAGE = 3;
+	private static final int TYPE_COUNT = 4;
+	private static final boolean isDebug = true;
 
 	private static Class launcherActivityClass;
 	
@@ -52,10 +53,11 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 			
 			int i = WAITCOUNT;
 			robaWaitForLoaded(5);
+			
 			while (true) {
 				Log.d(TAG, "Wait For the news page");
 				
-				if (robaWaitForViewByResourceId("com.ifeng.news2:id/channel_list_top_wrapper")) {
+				if (solo.getCurrentActivity().toString().startsWith("com.ifeng.news2.fragment.NewsMasterFragmentActivity")) {
 					Log.d(TAG, "List top wrapper found.");
 					break;
 				}
@@ -77,7 +79,7 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 				
 				while (j > 0) {
 					Log.d(TAG, "Remain news in this type: " + j);
-					for (int k = 1; k > 0; k--) {
+					for (int k = 2; k > 0; k--) {
 						if (r.nextInt() % 2 == 0) {
 							robaDrag(DragDirection.Top);
 							robaRandomSleep(2, 5);
@@ -90,30 +92,52 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 					robaWaitForLoaded(10);
 					
 					boolean picPage = false;
-					int touchCount = WAITCOUNT / 2;
-					while (touchCount > 0) {
-						Log.d(TAG, "Touch pic news. Remain: " + touchCount);
-						if (robaWaitForViewByResourceId("com.ifeng.news2:id/slide_image")) {
-							picPage = true;
+					boolean videoPage = false;
+					
+					while (true) {
+						String currentActivityName = solo.getCurrentActivity().toString();
+						Log.d(TAG, "Current activity: " + solo.getCurrentActivity().toString());
+						
+						if	(currentActivityName.startsWith("com.ifeng.news2.activity.DetailActivity")) {
+							Log.d(TAG, "Normal news found.");
 							break;
+						} else if (currentActivityName.startsWith("com.ifeng.news2.activity.SlideActivity")) {
+							picPage = true;
+							Log.d(TAG, "Slide News found.");
+							break;
+						} else if (currentActivityName.startsWith("com.ifeng.news2.activity.VideoDetailNewActivity")) {
+							videoPage = true;
+							Log.d(TAG, "Video News found.");
+							break;
+						} else if (currentActivityName.startsWith("com.ifeng.news2.activity.TopicDetailModuleActivity")) {
+							Log.d(TAG, "Topic News found.");
+							break;
+						} else if (currentActivityName.startsWith("com.ifeng.news2.fragment.NewsMasterFragmentActivity")) {
+							Log.d(TAG, "Click failed. Retry.");
+							robaRandomClickInViews(robaGetViewsWithResourceId(LinearLayout.class, "com.ifeng.news2:id/channel_list_top_wrapper"));
+						} else if (currentActivityName.startsWith("com.ifeng.news2.photo_text_live.PhotoTextNewActivity")) {
+							Log.d(TAG, "Photo text view found.");
+							break;
+						} else {
+							Log.d(TAG, "Unknown activity. Type: " + currentActivityName);
 						}
 						
-						solo.sleep(3000);
-						touchCount--;
-					}					
-
-					solo.scrollToTop();
-					
-					
+						solo.sleep(5000);						
+					}
+										
 					if (picPage) {
-						Log.d(TAG, "Pic news found!");
 						for (int l = 3; l > 0; l--) {
 							Log.d(TAG, "Remain right drag: " + l);
 							robaDrag(DragDirection.Right);
 							robaRandomSleep(2, 5);
 						}
+					} else if (videoPage) {
+						for (int l = 5; l > 0; l--) {
+							Log.d(TAG, "Remain top drag: " + l);
+							robaDrag(DragDirection.Top);
+							robaRandomSleep(2, 5);
+						}				
 					} else {
-						Log.d(TAG, "Normal news found!");
 						for (int l = 5; l > 0; l--) {
 							Log.d(TAG, "Remain top drag: " + l);
 							robaDrag(DragDirection.Top);
@@ -128,8 +152,9 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 					j--;					
 				}
 				
-				for (int k = 5; k > 0; k--) {
+				for (int k = 3; k > 0; k--) {
 					if (r.nextInt() % 2 == 0) {
+						Log.d(TAG, "Drag to left for another news type.");
 						robaDrag(DragDirection.Left);
 						robaRandomSleep(5, 8);
 					}
@@ -174,7 +199,12 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 				} 
 				
 				i--;
-				solo.sleep(5000);
+				
+				if (isDebug) {
+					solo.sleep(2000);
+				} else {
+					solo.sleep(10000);
+				}
 			}		
 		}
 	}
