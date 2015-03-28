@@ -49,6 +49,7 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 	private void readNews() {
 		if (APK_VERSION.equals("4.4.1_3116")) {
 			Log.d(TAG, "Read news");
+			
 			int i = WAITCOUNT;
 			robaWaitForLoaded(5);
 			while (true) {
@@ -148,10 +149,10 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 			
 			int i = WAITCOUNT;
 			
-			while (i > 0) {
-				Log.d(TAG, "Wait for the guide.");
+			while (i > 0) {				
+				Log.d(TAG, "Wait for the guide remain count: " + i);
 				
-				if (robaWaitForViewByResourceId("com.ifeng.news2:id/channel_list_top_wrapper") == false) {
+				if (solo.getCurrentActivity().toString().startsWith("com.ifeng.news2.activity.GuideActivity")) {
 					Log.d(TAG, "Guide page found!");
 					
 					int j = 8;
@@ -174,7 +175,6 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 				
 				i--;
 				solo.sleep(5000);
-				Log.d(TAG, "Wait for the guide remain count: " + i);
 			}		
 		}
 	}
