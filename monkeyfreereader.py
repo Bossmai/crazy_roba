@@ -42,7 +42,7 @@ while time.time() < end_time:
         device.touch(x, y, 'UP')
         print "Monkey touch in (" + str(x) + ", " + str(y) + ")"
     print "Remain time: " + (str(end_time - time.time()))
-    z_time = random.randint(0, 5)
+    z_time = 10
     MonkeyRunner.sleep(z_time)
     print "Sleep: " + str(z_time)
 print "Monkey success."
