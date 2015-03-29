@@ -19,9 +19,9 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 	private static final String LAUNCHER_ACTIVITY_FULL_CLASSNAME = "com.ifeng.news2.activity.SplashActivity";
 	private static final String TAG = "TestIfengNews";
 	private static final int WAITCOUNT = 10;
-	private static final int NEWS_PER_PAGE = 3;
-	private static final int TYPE_COUNT = 4;
-	private static final boolean isDebug = true;
+	private static final int NEWS_PER_PAGE = 1;
+	private static final int TYPE_COUNT = 1;
+	private static final boolean isDebug = false;
 
 	private static Class launcherActivityClass;
 	
@@ -79,7 +79,7 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 				
 				while (j > 0) {
 					Log.d(TAG, "Remain news in this type: " + j);
-					for (int k = 2; k > 0; k--) {
+					for (int k = 5; k > 0; k--) {
 						if (r.nextInt() % 2 == 0) {
 							robaDrag(DragDirection.Top);
 							robaRandomSleep(2, 5);
@@ -118,7 +118,11 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 						} else if (currentActivityName.startsWith("com.ifeng.news2.photo_text_live.PhotoTextNewActivity")) {
 							Log.d(TAG, "Photo text view found.");
 							break;
-						} else {
+						} else if (currentActivityName.startsWith("com.ifeng.news2.activity.SurveyActivity")) {
+							Log.d(TAG, "Survey view found.");
+							break;
+						}
+						else {
 							Log.d(TAG, "Unknown activity. Type: " + currentActivityName);
 						}
 						
@@ -128,7 +132,7 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 					if (picPage) {
 						for (int l = 3; l > 0; l--) {
 							Log.d(TAG, "Remain right drag: " + l);
-							robaDrag(DragDirection.Right);
+							solo.scrollToSide(solo.RIGHT);
 							robaRandomSleep(2, 5);
 						}
 					} else if (videoPage) {
@@ -152,10 +156,10 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 					j--;					
 				}
 				
-				for (int k = 3; k > 0; k--) {
+				for (int k = 5; k > 0; k--) {
 					if (r.nextInt() % 2 == 0) {
 						Log.d(TAG, "Drag to left for another news type.");
-						robaDrag(DragDirection.Left);
+						solo.scrollToSide(solo.RIGHT);
 						robaRandomSleep(5, 8);
 					}
 				}
@@ -163,6 +167,8 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 				i--;
 			}
 		}
+		
+		Log.d(TAG, "Done.");
 	}
 	
 	private void checkFirstStart() {
@@ -182,7 +188,8 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 					
 					int j = 8;
 					while (j > 0) {
-						robaDrag(DragDirection.Left);
+						solo.scrollToSide(solo.RIGHT);
+						//robaDrag(DragDirection.Left);
 						solo.sleep(2500);
 						Log.d(TAG, "Drag to skip the guide page. Remain drag: " + j);
 						j--;
@@ -211,6 +218,6 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 
 	@Override
 	public void tearDown() throws Exception {
-		solo.finishOpenedActivities();
+		//solo.finishOpenedActivities();
 	}
 }
