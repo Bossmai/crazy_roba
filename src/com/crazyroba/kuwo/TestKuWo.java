@@ -19,8 +19,10 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 	private static final String TAG = "TestKuWo";
 	private static final int WAITCOUNT = 3;
 	private static final int PLAYSONGS = 8;
-	private static final int MIN_PLAYSEC = 120;
-	private static final int MAX_PLAYSEC = 240;
+	private static final int MIN_PLAYSEC = 300;
+	private static final int MAX_PLAYSEC = 320;
+	
+	private static boolean isDebug = true;
 
 	private static Class launcherActivityClass;
 	
@@ -46,11 +48,7 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 			checkFirstStart();
 			Log.d(TAG, "Play random music.");
 			Random r = new Random();
-			if (r.nextInt() % 2 == 0) {
-				playDailyMusic();
-			} else {				
-				playBillBoard();
-			}
+			playDailyMusic();
 			Log.d(TAG, "Monkey success.");
 		} catch (Exception e) {
 			Log.d(TAG, "Monkey failed.");
@@ -275,7 +273,6 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 			}
 		} else if (APK_VERSION.equals("6.3.9.0_changxin09")) {
 			robaWaitForLoaded(10);
-			robaWaitForLoaded(15);
 			if (solo.waitForText("^È¡Ïû$")) {
 				Log.d(TAG, "Find cancel for the first start!");
 				solo.goBack();
@@ -291,6 +288,10 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 			Log.d(TAG, "Wait for the initialization.");
 			
 			int i = 30;
+			
+			if (isDebug) {
+				i = 1;
+			}
 			
 			while (i > 0) {
 				Log.d(TAG, "Wait for the guide skin button.");
@@ -308,7 +309,11 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 					break;
 				} else {
 					i--;
-					solo.sleep(10000);
+					if (isDebug) {
+						solo.sleep(100);
+					} else {
+						solo.sleep(10000);
+					}
 				}
 			}
 			
@@ -326,7 +331,12 @@ public class TestKuWo extends RobaActivityInstrumentationTestCase2 {
 						break;
 					} else {
 						i--;
-						solo.sleep(10000);
+						if (isDebug) {
+							solo.sleep(1000);
+						} else {
+							solo.sleep(10000);
+						}
+						
 						solo.scrollToTop();
 					}
 				}
