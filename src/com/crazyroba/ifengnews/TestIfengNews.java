@@ -21,7 +21,7 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 	private static final int WAITCOUNT = 10;
 	private static final int NEWS_PER_PAGE = 3;
 	private static final int TYPE_COUNT = 3;
-	private static final boolean isDebug = true;
+	private static final boolean isDebug = false;
 
 	private static Class launcherActivityClass;
 	
