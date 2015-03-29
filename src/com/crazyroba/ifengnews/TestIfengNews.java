@@ -19,9 +19,9 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 	private static final String LAUNCHER_ACTIVITY_FULL_CLASSNAME = "com.ifeng.news2.activity.SplashActivity";
 	private static final String TAG = "TestIfengNews";
 	private static final int WAITCOUNT = 10;
-	private static final int NEWS_PER_PAGE = 1;
-	private static final int TYPE_COUNT = 1;
-	private static final boolean isDebug = false;
+	private static final int NEWS_PER_PAGE = 3;
+	private static final int TYPE_COUNT = 3;
+	private static final boolean isDebug = true;
 
 	private static Class launcherActivityClass;
 	
@@ -160,7 +160,7 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 					if (r.nextInt() % 2 == 0) {
 						Log.d(TAG, "Drag to left for another news type.");
 						solo.scrollToSide(solo.RIGHT);
-						robaRandomSleep(5, 8);
+						robaRandomSleep(10, 15);
 					}
 				}
 				
