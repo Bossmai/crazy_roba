@@ -6,6 +6,7 @@ import java.util.Random;
 import android.app.Activity;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -24,7 +25,7 @@ public class TestQihoo extends RobaActivityInstrumentationTestCase2 {
 	private static final int WAITTIME = 5000;
 	private static final int WAITCOUNT = 3;
 	
-	private static final int DOWNLOADAPK = 2;
+	private static final int DOWNLOADAPK = 1;
 	
 	private static boolean isDebug = true;
 
@@ -56,53 +57,40 @@ public class TestQihoo extends RobaActivityInstrumentationTestCase2 {
 	
 	}
 	
-	private void searchAndDownload() {
-	}
-	
-	private void closeWifi() {
-		solo.scrollToSide(solo.LEFT);
-		solo.sleep(WAITTIME);
-		solo.scrollToBottom();
-		solo.sleep(WAITTIME);
-		solo.clickOnText("设置");
-		solo.sleep(WAITTIME);
-	}
-	
 	private void downloadAPK() {
 		Random r = new Random();
 		Log.d(TAG, "Start to download.");	
 		
-		for (int i = DOWNLOADAPK; i > 0; i--) {
-			
+		int i = DOWNLOADAPK;
+		for (; i > 0; i--) {
+				Log.d(TAG, "Remain apk: " + i);
 				for (int j = r.nextInt(3); j > 0; j--) {
 					if (r.nextInt() % 2 == 0) {
 						robaDrag(DragDirection.Top);
 						Log.d(TAG, "Drag down");
 					}
 				}
-			}
-			
-			Log.d(TAG, "Click to download.");
-			robaRandomClickInViews(robaGetViewsWithResourceId(TextView.class, "com.qihoo.appstore:id/app_status"));
-			
-			solo.sleep(WAITTIME);
-			if (solo.waitForText("继续下载")) {
-				Log.d(TAG, "Continue found!");
 				
-			}
+				Log.d(TAG, "Click to download.");
+				robaRandomClickInViews(robaGetViewsWithResourceId(TextView.class, "com.qihoo.appstore:id/app_status"));
 				
-			
-			if (isDebug) {
-				solo.sleep(WAITTIME * 12);
-			} else {
-				solo.sleep(WAITTIME * 12 * 5);
-			}
-			
-			if (solo.waitForText("秒装功能")) {
-				Log.d(TAG, "Fast install found!");
-				solo.clickOnText("取消");
 				solo.sleep(WAITTIME);
+				if (solo.waitForText("继续下载")) {
+					Log.d(TAG, "Continue found!");
+					solo.goBack();
+					solo.sleep(WAITTIME);
+					i++;
+					continue;
+				}				
+				
+				if (solo.waitForText("秒装功能")) {
+					Log.d(TAG, "Fast install found!");
+					solo.goBack();
+					solo.sleep(WAITTIME);
+				}
 			}
+			
+			
 	}
 	
 	
