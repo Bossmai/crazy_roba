@@ -141,7 +141,9 @@ public class RobaActivityInstrumentationTestCase2 extends ActivityInstrumentatio
     	while (remainTime > 0) {
     		Activity activity = solo.getCurrentActivity();       
         	int viewId = activity.getResources().getIdentifier(resourceId, "id" , activity.getPackageName());
+	        Log.d(TAG, String.valueOf(viewId));
         	View viewInstance = activity.findViewById(viewId);
+        	Log.d(TAG, viewInstance.toString());
         	if (solo.waitForView(viewInstance, 5000, true) == true) {
         		Log.d(TAG, resourceId + " found!");
         		return true;
