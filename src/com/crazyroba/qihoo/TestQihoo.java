@@ -64,9 +64,10 @@ public class TestQihoo extends RobaActivityInstrumentationTestCase2 {
 		int i = DOWNLOADAPK;
 		for (; i > 0; i--) {
 				Log.d(TAG, "Remain apk: " + i);
-				for (int j = r.nextInt(3); j > 0; j--) {
+				for (int j = 5; j > 0; j--) {
 					if (r.nextInt() % 2 == 0) {
 						robaDrag(DragDirection.Top);
+						solo.sleep(WAITTIME);
 						Log.d(TAG, "Drag down");
 					}
 				}
@@ -74,8 +75,10 @@ public class TestQihoo extends RobaActivityInstrumentationTestCase2 {
 				Log.d(TAG, "Click to download.");
 				robaRandomClickInViews(robaGetViewsWithResourceId(TextView.class, "com.qihoo.appstore:id/app_status"));
 				
-				solo.sleep(WAITTIME);
-				if (solo.waitForText("¼ÌÐøÏÂÔØ")) {
+				solo.sleep(WAITTIME * 5);
+				Log.d(TAG, "wait for 10M tips.");
+				
+				if (solo.waitForText("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")) {
 					Log.d(TAG, "Continue found!");
 					solo.goBack();
 					solo.sleep(WAITTIME);
@@ -83,11 +86,20 @@ public class TestQihoo extends RobaActivityInstrumentationTestCase2 {
 					continue;
 				}				
 				
-				if (solo.waitForText("Ãë×°¹¦ÄÜ")) {
-					Log.d(TAG, "Fast install found!");
-					solo.goBack();
+				int k = 10;
+				while (!solo.waitForText("ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½")) {
+					Log.d(TAG, "Wait for the fast install. remain " + k);
 					solo.sleep(WAITTIME);
+					if (k == 0) {
+						return;
+					} else {
+						k--;
+					}
 				}
+				
+				Log.d(TAG, "Fast install found!");
+				solo.clickOnText("ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½");
+				solo.sleep(WAITTIME * 25);
 			}
 			
 			
@@ -102,6 +114,7 @@ public class TestQihoo extends RobaActivityInstrumentationTestCase2 {
 		if (APK_VERSION.equals("300030210")) {
 			while (true) {
 				if (solo.getCurrentActivity().toString().startsWith("com.qihoo.appstore.activities.LauncherActivity")) {
+					Log.d(TAG, "Found LauncherActivity!");
 					break;
 				}
 			}
