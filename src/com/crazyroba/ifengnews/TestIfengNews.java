@@ -2,6 +2,7 @@ package com.crazyroba.ifengnews;
 
 import java.util.Random;
 
+import android.app.Activity;
 import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -19,8 +20,8 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 	private static final String LAUNCHER_ACTIVITY_FULL_CLASSNAME = "com.ifeng.news2.activity.SplashActivity";
 	private static final String TAG = "TestIfengNews";
 	private static final int WAITCOUNT = 10;
-	private static final int NEWS_PER_PAGE = 3;
-	private static final int TYPE_COUNT = 3;
+	private static final int NEWS_PER_PAGE = 2;
+	private static final int TYPE_COUNT = 2;
 	private static final boolean isDebug = false;
 
 	private static Class launcherActivityClass;
@@ -82,7 +83,7 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 					for (int k = 5; k > 0; k--) {
 						if (r.nextInt() % 2 == 0) {
 							robaDrag(DragDirection.Top);
-							robaRandomSleep(2, 5);
+							solo.sleep(10000);
 						}	
 					}
 					
@@ -218,6 +219,12 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 
 	@Override
 	public void tearDown() throws Exception {
-		//solo.finishOpenedActivities();
+		Activity a = super.getActivity();
+		if (a != null) {
+		a.finish();
+		setActivity(null);
+		solo.finishOpenedActivities();
+		}
+		solo.finishOpenedActivities();
 	}
 }
