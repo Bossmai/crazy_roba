@@ -1,6 +1,10 @@
 package com.crazyroba.baidu;
 
+import java.util.Random;
+
 import android.util.Log;
+import android.view.KeyEvent;
+import android.widget.RelativeLayout;
 
 import com.crazyroba.RobaActivityInstrumentationTestCase2;
 import com.jayway.android.robotium.solo.Solo;
@@ -14,6 +18,8 @@ public class TestBaidu extends RobaActivityInstrumentationTestCase2{
 	private static final int WAITTIME = 5000;
 	
 	private static boolean isDebug = true;
+	
+	private static int DOWNLOADAPK = 1;
 	
 	private static Class launcherActivityClass;
 	
@@ -94,18 +100,75 @@ public class TestBaidu extends RobaActivityInstrumentationTestCase2{
 		if (APK_VERSION.equals("1001605m_6.2.0")) {
 			while (true) {
 				if (solo.getCurrentActivity().toString().startsWith("com.baidu.appsearch.manage.mustinstall.MustInstallAppsDialogActivity")) {
-					Log.d(TAG, "Must install apps found!");
+					Log.d(TAG, "Must install Activity found!");
+					solo.sendKey(KeyEvent.KEYCODE_BACK);
 					break;
 				}
+				Log.d(TAG, "Wait for must install activity");
+				solo.sleep(WAITTIME);
 			}
 			
-			solo.goBack();
-			solo.sleep(WAITTIME);		
+			while (true) {
+				if (solo.getCurrentActivity().toString().startsWith("com.baidu.appsearch.MainTabActivity")) {
+					Log.d(TAG, "Main tab activity found!");
+					break;
+				}
+				
+				Log.d(TAG, "Wait for must Main tab activity");
+				solo.sleep(WAITTIME);
+			}
+			
+			for (int i = DOWNLOADAPK; i > 0; i--) {
+				Log.d(TAG, "Start to download apks. remain: " + i);
+				
+				Random r = new Random();
+				
+				for (int j = 5; j > 0; j--) {
+					if (r.nextInt() % 2 == 0) {
+						robaDrag(DragDirection.Top);
+						solo.sleep(WAITTIME);
+						Log.d(TAG, "Drag down");
+					}
+				}
+				solo.sleep(WAITTIME);
+				
+				robaRandomClickInViews(robaGetViewsWithResourceId(RelativeLayout.class, "com.baidu.appsearch:id/app_action"));
+				
+				int t = 10;
+				if (isDebug) {
+					t = 3;
+				}
+				
+				while (t > 0) {
+
+					Log.d(TAG, "Wait for continue downloading. remain: " + t);
+					
+					if(solo.waitForText("继续下载")) {
+						solo.clickOnText("继续下载");
+						Log.d(TAG, "Found! Clicked!");
+						break;
+					}
+					
+					t--;
+					solo.sleep(WAITTIME);
+					
+				}
+				solo.clickOnScreen(80, 388);
+				solo.clickOnText("继续下载");
+				solo.sleep(WAITTIME * 10);
+			}
 		}
+		
+		
 	}
 	
 	@Override
 	public void tearDown() throws Exception {
-		solo.finishOpenedActivities();
+		Activity a = super.getActivity();
+		+		if (a != null) {
+		+		a.finish();
+		+		setActivity(null);
+		+		solo.finishOpenedActivities();
+		+		}
 	}
 }
