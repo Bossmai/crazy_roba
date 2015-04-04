@@ -2,6 +2,7 @@ package com.crazyroba.ifengnews;
 
 import java.util.Random;
 
+import android.app.Activity;
 import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -21,7 +22,7 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 	private static final int WAITCOUNT = 10;
 	private static final int NEWS_PER_PAGE = 2;
 	private static final int TYPE_COUNT = 2;
-	private static final boolean isDebug = true;
+	private static final boolean isDebug = false;
 
 	private static Class launcherActivityClass;
 	
@@ -58,8 +59,6 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 				Log.d(TAG, "Wait For the news page");
 				
 				if (solo.getCurrentActivity().toString().startsWith("com.ifeng.news2.fragment.NewsMasterFragmentActivity")) {
-					
-					
 					Log.d(TAG, "List top wrapper found.");
 					break;
 				}
@@ -67,8 +66,7 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 
 				Log.d(TAG, "Remain wait count: " + i);
 				i--;
-				solo.sleep(5000);
-				Log.d(TAG, solo.getCurrentActivity().toString());
+				
 			}
 			
 			i = TYPE_COUNT;
@@ -185,7 +183,7 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 			
 			while (i > 0) {				
 				Log.d(TAG, "Wait for the guide remain count: " + i);
-				Log.d(TAG, solo.getCurrentActivity().toString());
+				
 				if (solo.getCurrentActivity().toString().startsWith("com.ifeng.news2.activity.GuideActivity")) {
 					Log.d(TAG, "Guide page found!");
 					
@@ -221,6 +219,12 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 
 	@Override
 	public void tearDown() throws Exception {
-		//solo.finishOpenedActivities();
+		Activity a = super.getActivity();
+		if (a != null) {
+		a.finish();
+		setActivity(null);
+		solo.finishOpenedActivities();
+		}
+		solo.finishOpenedActivities();
 	}
 }
