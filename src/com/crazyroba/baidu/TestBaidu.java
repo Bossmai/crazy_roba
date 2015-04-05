@@ -2,6 +2,7 @@ package com.crazyroba.baidu;
 
 import java.util.Random;
 
+import android.app.Activity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.RelativeLayout;
@@ -98,7 +99,7 @@ public class TestBaidu extends RobaActivityInstrumentationTestCase2{
 	
 	private void downloadAPK() {
 		if (APK_VERSION.equals("1001605m_6.2.0")) {
-			while (true) {
+			/*while (true) {
 				if (solo.getCurrentActivity().toString().startsWith("com.baidu.appsearch.manage.mustinstall.MustInstallAppsDialogActivity")) {
 					Log.d(TAG, "Must install Activity found!");
 					solo.sendKey(KeyEvent.KEYCODE_BACK);
@@ -106,7 +107,7 @@ public class TestBaidu extends RobaActivityInstrumentationTestCase2{
 				}
 				Log.d(TAG, "Wait for must install activity");
 				solo.sleep(WAITTIME);
-			}
+			}*/
 			
 			while (true) {
 				if (solo.getCurrentActivity().toString().startsWith("com.baidu.appsearch.MainTabActivity")) {
@@ -143,8 +144,7 @@ public class TestBaidu extends RobaActivityInstrumentationTestCase2{
 
 					Log.d(TAG, "Wait for continue downloading. remain: " + t);
 					
-					if(solo.waitForText("继续下载")) {
-						solo.clickOnText("继续下载");
+					if(solo.waitForText("缁х画涓嬭浇")) {
 						Log.d(TAG, "Found! Clicked!");
 						break;
 					}
@@ -154,7 +154,6 @@ public class TestBaidu extends RobaActivityInstrumentationTestCase2{
 					
 				}
 				solo.clickOnScreen(80, 388);
-				solo.clickOnText("继续下载");
 				solo.sleep(WAITTIME * 10);
 			}
 		}
@@ -165,10 +164,10 @@ public class TestBaidu extends RobaActivityInstrumentationTestCase2{
 	@Override
 	public void tearDown() throws Exception {
 		Activity a = super.getActivity();
-		+		if (a != null) {
-		+		a.finish();
-		+		setActivity(null);
-		+		solo.finishOpenedActivities();
-		+		}
+			if (a != null) {
+			a.finish();
+			setActivity(null);
+			solo.finishOpenedActivities();
+			}
 	}
 }
