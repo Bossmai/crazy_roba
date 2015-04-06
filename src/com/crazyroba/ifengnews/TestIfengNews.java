@@ -20,8 +20,8 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 	private static final String LAUNCHER_ACTIVITY_FULL_CLASSNAME = "com.ifeng.news2.activity.SplashActivity";
 	private static final String TAG = "TestIfengNews";
 	private static final int WAITCOUNT = 10;
-	private static final int NEWS_PER_PAGE = 2;
-	private static final int TYPE_COUNT = 2;
+	private static final int NEWS_PER_PAGE = 3;
+	private static final int TYPE_COUNT = 3;
 	private static final boolean isDebug = false;
 
 	private static Class launcherActivityClass;
@@ -75,10 +75,11 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 			
 			while (i > 0) {
 				robaWaitForLoaded(10);
-				Log.d(TAG, "Remain news type: " + i);
+				
 				int j = NEWS_PER_PAGE;
 				
 				while (j > 0) {
+					Log.d(TAG, "Remain news type: " + i);
 					Log.d(TAG, "Remain news in this type: " + j);
 					for (int k = 5; k > 0; k--) {
 						if (r.nextInt() % 2 == 0) {
@@ -115,6 +116,11 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 							break;
 						} else if (currentActivityName.startsWith("com.ifeng.news2.fragment.NewsMasterFragmentActivity")) {
 							Log.d(TAG, "Click failed. Retry.");
+							solo.drag(300, 20, 300, 300, 5);
+							solo.sleep(20000);
+							for (int o = 3; o > 0; o--) {
+								robaDrag(DragDirection.Top);
+							}
 							robaRandomClickInViews(robaGetViewsWithResourceId(LinearLayout.class, "com.ifeng.news2:id/channel_list_top_wrapper"));
 						} else if (currentActivityName.startsWith("com.ifeng.news2.photo_text_live.PhotoTextNewActivity")) {
 							Log.d(TAG, "Photo text view found.");
@@ -124,35 +130,36 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 							break;
 						}
 						else {
-							Log.d(TAG, "Unknown activity. Type: " + currentActivityName);
+							Log.e(TAG, "Unknown activity. Type: " + currentActivityName);
+							break;
 						}
 						
-						solo.sleep(5000);						
+							solo.sleep(15000);					
 					}
 										
 					if (picPage) {
 						for (int l = 3; l > 0; l--) {
 							Log.d(TAG, "Remain right drag: " + l);
 							solo.scrollToSide(solo.RIGHT);
-							robaRandomSleep(2, 5);
+							robaRandomSleep(4, 10);
 						}
 					} else if (videoPage) {
 						for (int l = 5; l > 0; l--) {
 							Log.d(TAG, "Remain top drag: " + l);
 							robaDrag(DragDirection.Top);
-							robaRandomSleep(2, 5);
+							robaRandomSleep(4, 10);
 						}				
 					} else {
 						for (int l = 5; l > 0; l--) {
 							Log.d(TAG, "Remain top drag: " + l);
 							robaDrag(DragDirection.Top);
-							robaRandomSleep(2, 5);
+							robaRandomSleep(4, 10);
 						}
 					}
 					
 					
 					solo.goBack();
-					robaRandomSleep(2, 5);
+					robaRandomSleep(4, 10);
 					
 					j--;					
 				}
@@ -160,7 +167,7 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 				for (int k = 5; k > 0; k--) {
 					if (r.nextInt() % 2 == 0) {
 						Log.d(TAG, "Drag to left for another news type.");
-						solo.scrollToSide(solo.RIGHT);
+						solo.drag(300, 20, 300, 300, 5);
 						robaRandomSleep(10, 15);
 					}
 				}
@@ -219,12 +226,11 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 
 	@Override
 	public void tearDown() throws Exception {
-		Activity a = super.getActivity();
+		/*Activity a = super.getActivity();
 		if (a != null) {
 		a.finish();
 		setActivity(null);
 		solo.finishOpenedActivities();
-		}
-		solo.finishOpenedActivities();
+		}*/
 	}
 }
