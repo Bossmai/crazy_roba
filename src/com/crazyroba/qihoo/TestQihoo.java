@@ -25,7 +25,7 @@ public class TestQihoo extends RobaActivityInstrumentationTestCase2 {
 	private static final int WAITTIME = 5000;
 	private static final int WAITCOUNT = 3;
 	
-	private static final int DOWNLOADAPK = 1;
+	private static final int DOWNLOADAPK = 3;
 	
 	private static boolean isDebug = true;
 
@@ -58,6 +58,7 @@ public class TestQihoo extends RobaActivityInstrumentationTestCase2 {
 	}
 	
 	private void downloadAPK() {
+		boolean hasFastInstallSetted = false;
 		Random r = new Random();
 		Log.d(TAG, "Start to download.");	
 		
@@ -72,37 +73,44 @@ public class TestQihoo extends RobaActivityInstrumentationTestCase2 {
 					}
 				}
 				
+				solo.sleep(WAITTIME * 2);
+				Log.d(TAG, "Close ad.");
+				solo.goBack();
+				solo.sleep(WAITTIME * 2);
 				Log.d(TAG, "Click to download.");
+				
 				robaRandomClickInViews(robaGetViewsWithResourceId(TextView.class, "com.qihoo.appstore:id/app_status"));
 				
-				solo.sleep(WAITTIME * 5);
-				Log.d(TAG, "wait for 10M tips.");
+				if (isDebug) {
+					solo.sleep(WAITTIME * 5);
+				} else {
+					solo.sleep(WAITTIME * 15);
+				}
 				
-				if (solo.waitForText("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")) {
-					Log.d(TAG, "Continue found!");
-					solo.goBack();
-					solo.sleep(WAITTIME);
-					i++;
-					continue;
-				}				
 				
 				int k = 10;
-				while (!solo.waitForText("ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½")) {
+				while (!hasFastInstallSetted) {
 					Log.d(TAG, "Wait for the fast install. remain " + k);
 					solo.sleep(WAITTIME);
+					if (solo.waitForText("Ãë×°")) {
+						Log.d(TAG, "Fast install found!");
+						solo.clickOnScreen(100, 320);
+						solo.sleep(WAITTIME * 10);
+						hasFastInstallSetted = true;
+						break;
+					}
 					if (k == 0) {
-						return;
+						break;
 					} else {
 						k--;
 					}
 				}
 				
-				Log.d(TAG, "Fast install found!");
-				solo.clickOnText("ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½");
-				solo.sleep(WAITTIME * 25);
-			}
-			
-			
+				solo.sleep(WAITTIME * 4);
+				
+				
+				
+			}		
 	}
 	
 	
@@ -119,6 +127,10 @@ public class TestQihoo extends RobaActivityInstrumentationTestCase2 {
 				}
 			}
 			
+			solo.goBack();
+			Log.d(TAG, "Close LauncherActivity!");
+			solo.sleep(WAITTIME * 5);
+			Log.d(TAG, "Close LauncherActivity again for update!");
 			solo.goBack();
 			solo.sleep(WAITTIME);
 		}
