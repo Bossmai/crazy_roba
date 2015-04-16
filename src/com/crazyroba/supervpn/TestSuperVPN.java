@@ -53,8 +53,16 @@ public class TestSuperVPN extends RobaActivityInstrumentationTestCase2 {
 		
 		solo.clickOnText("Connect");
 		Log.d(TAG, "Click Button");
+		solo.sleep(5000);
+		Log.d(TAG, "Trusted");
+
+		robaClickOnView("com.android.vpndialogs:id/check");
+		solo.sleep(5000);
 		
-		solo.sleep(30000);
+		Log.d(TAG, "Confirm!");
+
+		robaClickOnView("android:id/button1");
+		solo.sleep(5000);
 	
 	}
 	
