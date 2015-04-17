@@ -132,7 +132,43 @@ public class TestHaoSou extends RobaActivityInstrumentationTestCase2 {
 	
 	private void clickNovel() {
 		if (APK_VERSION.equals("150416")) {
-			so
+			solo.clickOnScreen(130, 215);
+			
+			solo.sleep(WAITTIME);
+			
+			Random r = new Random();
+			
+			if (r.nextInt() % 2 == 0) {
+				solo.clickOnScreen(160, 215);
+			} else {
+				solo.clickOnScreen(160, 320);
+			}
+			
+			solo.sleep(WAITTIME);
+			
+			solo.clickOnScreen(64, 246);
+			
+			solo.sleep(WAITTIME);
+			
+			for (int i = 10; i > 0; i--) {
+				solo.clickOnScreen(280, 240);
+				robaRandomSleep(5, 10);
+			}
+			
+			solo.goBack();
+			
+			solo.sleep(WAITTIME);
+			
+			solo.clickOnScreen(235, 400);
+			
+			solo.sleep(WAITTIME);
+			
+			solo.goBack();
+			
+			solo.sleep(WAITTIME);
+			
+			solo.goBack();	
+			
 		}
 	}
 	
