@@ -8,8 +8,8 @@ activity = 'com.jrzheng.supervpn.view.MainActivity'
 runComponent = package + '/' + activity
 
 print "Wait For connection..."
-device = MonkeyRunner.waitForConnection()
-#device = MonkeyRunner.waitForConnection(300, sys.argv[1])
+#device = MonkeyRunner.waitForConnection()
+device = MonkeyRunner.waitForConnection(300, sys.argv[1])
 
 print "Connected."
 device.startActivity(component=runComponent)
