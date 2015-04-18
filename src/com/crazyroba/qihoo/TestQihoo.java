@@ -15,14 +15,14 @@ import com.crazyroba.RobaActivityInstrumentationTestCase2;
 import com.jayway.android.robotium.solo.Solo;
 
 public class TestQihoo extends RobaActivityInstrumentationTestCase2 {
-	private static final String APK_VERSION = "472885";
+	private static final String APK_VERSION = "491610";
 
 	private static boolean isFirstStart = false;
 	
 	//private static final String LAUNCHER_ACTIVITY_FULL_CLASSNAME = "cn.kuwo.player/cn.kuwo.ui.guide.GuideActivity";
 	private static final String LAUNCHER_ACTIVITY_FULL_CLASSNAME = "com.qihoo.appstore.activities.LauncherActivity";
 	private static final String TAG = "TestQihoo";
-	private static final int WAITTIME = 5000;
+	private static int WAITTIME = 5000;
 	private static final int WAITCOUNT = 3;
 	
 	private static final int DOWNLOADAPK = 3;
@@ -46,18 +46,130 @@ public class TestQihoo extends RobaActivityInstrumentationTestCase2 {
 	@Override
 	protected void setUp() throws Exception {
 		solo = new Solo(getInstrumentation(), getActivity());
+		
+		if (isDebug) {
+			WAITTIME = WAITTIME * 2;
+		}
 	}
 	
 	public void test1() {
 		Log.d(TAG, "TestQihoo start.");
 		checkFirstStart(); 
 		Log.d(TAG, "Done!");
-		
+		addPV();
 		downloadAPK();
 	
 	}
 	
 	
+	private void addPV() {
+		if (APK_VERSION.equals("491610")) {
+			for (int i = 5; i > 0; i--) {
+				solo.scrollToSide(solo.RIGHT);
+				
+				solo.sleep(WAITTIME);
+			}
+			
+			solo.clickOnScreen(95, 280);
+				
+			solo.sleep(WAITTIME);
+			
+			
+			for (int i = 5; i > 0; i--) {
+				robaDrag(DragDirection.Top);
+				
+				solo.sleep(WAITTIME);
+			}
+			
+			solo.clickOnScreen(160, 240);
+			
+			solo.sleep(WAITTIME);
+			
+			for (int i = 5; i > 0; i--) {
+				robaDrag(DragDirection.Top);
+				
+				solo.sleep(WAITTIME);
+			}
+			
+			solo.goBack();
+			
+			solo.sleep(WAITTIME);
+			
+			for (int i = 3; i > 0; i--) {
+				robaDrag(DragDirection.Top);
+				
+				solo.sleep(WAITTIME);
+			}
+			
+			solo.clickOnScreen(160, 240);
+			
+			solo.sleep(WAITTIME);
+			
+			for (int i = 5; i > 0; i--) {
+				robaDrag(DragDirection.Top);
+				
+				solo.sleep(WAITTIME);
+			}
+			
+			solo.goBack();
+			
+			solo.sleep(WAITTIME);
+			
+			solo.clickOnScreen(200, 95);
+			
+			solo.sleep(WAITTIME);
+			
+			solo.clickOnScreen(250, 130);
+			
+			solo.sleep(WAITTIME);
+			
+			for (int i = 3; i > 0; i--) {
+				Random r = new Random();
+				for (int j = r.nextInt(3); j > 0; j--) {
+					solo.scrollDown();
+					solo.sleep(WAITTIME);
+				}
+				
+				solo.clickOnScreen(150, 150);
+				
+				solo.sleep(WAITTIME);
+				
+				for (int j = r.nextInt(3); j > 0; j--) {
+					solo.scrollDown();
+					solo.sleep(WAITTIME);
+				}
+				
+				solo.goBack();
+				
+				solo.sleep(WAITTIME);
+			}
+			
+			solo.goBack();
+			
+			solo.clickOnScreen(40, 95);
+			
+			solo.sleep(WAITTIME);
+			
+			solo.clickOnScreen(175, 175);
+			
+			solo.sleep(WAITTIME);
+			
+			Random r = new Random();
+			for (int j = r.nextInt(8); j > 0; j--) {
+				solo.scrollDown();
+				solo.sleep(WAITTIME);
+			}
+			
+			for (int i = 5; i > 0; i--) {
+				solo.goBack();
+				solo.sleep(WAITTIME);
+			}
+			
+			solo.clickOnScreen(40, 95);
+			
+			solo.sleep(WAITTIME);
+		}
+	}
 	
 	private void downloadAPK() {
 		if (APK_VERSION.equals("300030210")) {
