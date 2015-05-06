@@ -49,7 +49,7 @@ public class TestHaoSou extends RobaActivityInstrumentationTestCase2 {
 		if (APK_VERSION.equals("150416")) {
 			Log.d(TAG, "Click welcome");
 			solo.clickOnScreen(160,  350);
-			solo.sleep(WAITTIME);
+			solo.sleep(WAITTIME * 3);
 		}
 	}
 	
