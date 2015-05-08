@@ -48,7 +48,12 @@ public class TestHaoSou extends RobaActivityInstrumentationTestCase2 {
 	private void checkFirstStart() {
 		if (APK_VERSION.equals("150416")) {
 			Log.d(TAG, "Click welcome");
-			solo.clickOnScreen(160,  350);
+			try {
+				solo.clickOnScreen(160,  350);
+			} catch (Exception e) {
+				;
+			}
+			
 			solo.sleep(WAITTIME * 3);
 		}
 	}
@@ -56,7 +61,8 @@ public class TestHaoSou extends RobaActivityInstrumentationTestCase2 {
 	private void clickHot() {
 		if (APK_VERSION.equals("150416")) {
 			Log.d(TAG, "Click hot news");
-			solo.clickOnScreen(160, 290);
+			
+			solo.clickOnScreen(80, 290);
 			
 			Log.d(TAG, solo.getCurrentActivity().toString());
 			solo.sleep(WAITTIME * 2);
