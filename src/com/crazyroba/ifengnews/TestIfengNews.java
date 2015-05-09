@@ -44,7 +44,7 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 	}
 	
 	public void test1() {
-		checkFirstStart();
+		//checkFirstStart();
 		readNews();	
 	}
 	
@@ -88,7 +88,19 @@ public class TestIfengNews extends RobaActivityInstrumentationTestCase2 {
 						}	
 					}
 					
-					robaRandomClickInViews(robaGetViewsWithResourceId(LinearLayout.class, "com.ifeng.news2:id/channel_list_top_wrapper"));
+					boolean failedFlag = false;
+					
+					try {
+						robaRandomClickInViews(robaGetViewsWithResourceId(LinearLayout.class, "com.ifeng.news2:id/channel_list_top_wrapper"));
+					} catch (Exception e) {
+						failedFlag = true;
+					}
+					
+					if (failedFlag == true) {
+						j++;
+						continue;
+					}
+					
 					Log.d(TAG, "Click one news.");
 					
 					robaWaitForLoaded(10);
