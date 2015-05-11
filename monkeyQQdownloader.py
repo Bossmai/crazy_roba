@@ -3,22 +3,35 @@ import time
 import random
 import sys
 
-TEST_LENGTH = 600
-MIN_X = 20
-MAX_X = 220
-MIN_Y = 20
-MAX_Y = 400
-
-package = 'com.news.newsshixun'
-activity = 'com.news.newsshixun.FirstActivity'
+package = 'com.tencent.android.qqdownloader'
+activity = 'com.tencent.assistant.activity.SplashActivity'
 runComponent = package + '/' + activity
 
+WAITTIME = 5
+
 print "Wait For connection..."
-device = MonkeyRunner.waitForConnection(300, sys.argv[1])
+device = MonkeyRunner.waitForConnection()
+#device = MonkeyRunner.waitForConnection(300, sys.argv[1])
 
 print "Connected."
 device.startActivity(component=runComponent)
 
+MonkeyRunner.sleep(WAITTIME * 5)
+
+device.touch(280, 50, 'DOWN_AND_UP')
+
+MonkeyRunner.sleep(WAITTIME)
+
+device.touch(277, 305, 'DOWN_AND_UP')
+
+MonkeyRunner.sleep(WAITTIME)
+
+for i in range(0, 60):
+    device.touch(200, 300, 'DOWN_AND_UP')
+    MonkeyRunner.sleep(WAITTIME)
+    device.press('KEYCODE_BACK', 'DOWN_AND_UP')
+    MonkeyRunner.sleep(WAITTIME)
+'''
 start_time = time.time()
 print "Current time:" + str(start_time)
 
@@ -46,3 +59,4 @@ while time.time() < end_time:
     MonkeyRunner.sleep(z_time)
     print "Sleep: " + str(z_time)
 print "Monkey success."
+'''
